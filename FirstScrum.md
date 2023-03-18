@@ -12,7 +12,7 @@
   * Redis(key-value database, storing token)
   * Terminal client
 
-* Desgin Pattern
+* Design Pattern
   * MVC: Model + View(UI + Terminal) + Controller
   * Model
     * Service

@@ -19,7 +19,6 @@
     * Model
       * Entity
       * Mapper
-  1. View -> Controller -> Service(Logic) -> Mapper -> Entity
-  2. 
-    * Terminal -> Service -> Mapper -> Entity
-    * Terminal -> Controller -> Service -> Mapper -> Entity
+  * View -> Controller -> Service(Logic) -> Mapper -> Entity
+  * Terminal -> Service -> Mapper -> Entity
+  * Terminal -> Controller -> Service -> Mapper -> Entity? (Asking in next Tuesday)

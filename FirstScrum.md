@@ -1,9 +1,9 @@
 # Task
-1. Comment system
+1. Estate Agency System
 
 # Technologies
 * Front-end
-  * React + UI framework
+  * React + UI framework (https://aglowiditsolutions.com/blog/best-react-ui-framework/#ReactComponentUIFramework)
   * Axios(Ajax)
 
 * Back-end
@@ -19,6 +19,6 @@
     * Model
       * Entity
       * Mapper
-  * View -> Controller -> Service(Logic) -> Mapper -> Entity
+  * GUI -> Controller -> Service(Logic) -> Mapper -> Entity
   * Terminal -> Service -> Mapper -> Entity
   * Terminal -> Controller -> Service -> Mapper -> Entity? (Asking in next Tuesday)

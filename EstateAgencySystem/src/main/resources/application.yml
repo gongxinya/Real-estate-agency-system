@@ -1,0 +1,21 @@
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
+spring:
+  datasource:
+    url: jdbc:mariadb://hz65.host.cs.st-andrews.ac.uk:3306/hz65_estate_agency_system?characterEncoding=utf-8&serverTimezone=UTC
+    username: hz65
+    password: 875J3kAG0w1.Pb
+    driver-class-name: org.mariadb.jdbc.Driver
+  redis:
+    host: hz65.host.cs.st-andrews.ac.uk
+    port: 6379
+    password: 875J3kAG0w1.Pb
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: stacs.estate.cs5031p3code.model

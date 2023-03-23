@@ -10,27 +10,46 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
- * Redis using FastJson serialisation
+ * A class for representing Redis using FastJson serialisation
  *
  * @author 220032952
  */
-public class FastJsonRedisSerializer<T> implements RedisSerializer<T> {
+public class FastJsonRedisSerialiser<T> implements RedisSerializer<T> {
 
-    public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
+    /**
+     * The default charset.
+     */
+    public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
-    private Class<T> clazz;
+    /**
+     * The type of java class.
+     */
+    private final Class<T> clazz;
 
     static {
         ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
     }
 
-    public FastJsonRedisSerializer(Class<T> clazz) {
+    /**
+     * The constructor method.
+     *
+     * @param clazz The type of class.
+     */
+    public FastJsonRedisSerialiser(Class<T> clazz) {
         super();
         this.clazz = clazz;
     }
 
+    /**
+     * The method for serializing a java object.
+     *
+     * @param t The java object.
+     * @return Return the type code after serialization.
+     * @throws SerializationException The serialization exception.
+     */
     @Override
     public byte[] serialize(T t) throws SerializationException {
         if (t == null) {
@@ -39,6 +58,13 @@ public class FastJsonRedisSerializer<T> implements RedisSerializer<T> {
         return JSON.toJSONString(t, SerializerFeature.WriteClassName).getBytes(DEFAULT_CHARSET);
     }
 
+    /**
+     * The method for deserializing a java object.
+     *
+     * @param bytes The byte code.
+     * @return Return a java object.
+     * @throws SerializationException The serialization exception.
+     */
     @Override
     public T deserialize(byte[] bytes) throws SerializationException {
         if (bytes == null || bytes.length <= 0) {
@@ -49,7 +75,12 @@ public class FastJsonRedisSerializer<T> implements RedisSerializer<T> {
         return JSON.parseObject(str, clazz);
     }
 
-
+    /**
+     * The method for getting the type of Java class.
+     *
+     * @param clazz The class.
+     * @return Return the Java type.
+     */
     protected JavaType getJavaType(Class<?> clazz) {
         return TypeFactory.defaultInstance().constructType(clazz);
     }

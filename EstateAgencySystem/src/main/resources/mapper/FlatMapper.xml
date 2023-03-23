@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="stacs.estate.cs5031p3code.mapper.FlatMapper">
+
+    <resultMap id="BaseResultMap" type="stacs.estate.cs5031p3code.model.po.Flat">
+            <id property="flatId" column="flat_id" jdbcType="BIGINT"/>
+            <result property="flatName" column="flat_name" jdbcType="VARCHAR"/>
+            <result property="flatArea" column="flat_area" jdbcType="DECIMAL"/>
+            <result property="flatSoldOutDate" column="flat_sold_out_date" jdbcType="TIMESTAMP"/>
+            <result property="flatPrice" column="flat_price" jdbcType="DECIMAL"/>
+            <result property="buildingId" column="building_id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        flat_id,flat_name,flat_area,
+        flat_sold_out_date,flat_price,building_id,
+        user_id
+    </sql>
+</mapper>

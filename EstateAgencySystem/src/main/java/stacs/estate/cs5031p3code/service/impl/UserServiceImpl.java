@@ -1,5 +1,6 @@
 package stacs.estate.cs5031p3code.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +15,7 @@ import stacs.estate.cs5031p3code.utils.JwtUtil;
 import stacs.estate.cs5031p3code.utils.RedisCache;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -38,6 +40,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      */
     @Autowired
     private RedisCache redisCache;
+
+    /**
+     * The user mapper.
+     */
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * The method for login.
@@ -80,6 +88,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         var userId = securityUser.getUser().getUserId().toString();
         // Delete the user id from redis.
         redisCache.deleteObject(userId);
+    }
+
+    /**
+     * The method for getting user list.
+     *
+     * @return Return the user list.
+     */
+    @Override
+    public List<User> getUserList() {
+        return userMapper.selectList(null);
     }
 }
 

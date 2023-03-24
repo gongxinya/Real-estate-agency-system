@@ -6,6 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import stacs.estate.cs5031p3code.service.UserService;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * The class for testing UserService.
  *
@@ -32,7 +34,9 @@ public class UserServiceTest {
      */
     @Test
     public void testUserList() {
-
+        var userList = userService.getUserList();
+        assertNotNull(userList);
+        assertEquals(2, userList.size());
     }
 
     /**

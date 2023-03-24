@@ -26,4 +26,11 @@ public interface UserService extends IService<User> {
      * The method for logout.
      */
     void logout();
+
+    /**
+     * The method for getting user list.
+     *
+     * @return Return the user list.
+     */
+    List<User> getUserList();
 }

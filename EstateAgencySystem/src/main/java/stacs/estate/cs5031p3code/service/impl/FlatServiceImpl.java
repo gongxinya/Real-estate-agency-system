@@ -7,13 +7,14 @@ import stacs.estate.cs5031p3code.mapper.FlatMapper;
 import org.springframework.stereotype.Service;
 
 /**
-* @author hz65
-* @description 针对表【flat(The flat table)】的数据库操作Service实现
-* @createDate 2023-03-23 22:22:51
-*/
+ * The implement of service for database operations on the flat table.
+ *
+ * @author 220032952
+ * @version 0.0.1
+ */
 @Service
 public class FlatServiceImpl extends ServiceImpl<FlatMapper, Flat>
-    implements FlatService{
+        implements FlatService {
 
 }
 

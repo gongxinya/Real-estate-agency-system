@@ -7,13 +7,23 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* @author hz65
-* @description 针对表【user(The user table)】的数据库操作Service
-* @createDate 2023-03-23 22:22:51
-*/
+ * Service for database operations on the user table.
+ *
+ * @author 220032952
+ * @version 0.0.1
+ */
 public interface UserService extends IService<User> {
 
+    /**
+     * The method for login.
+     *
+     * @param user The user information.
+     * @return Return a user_key.
+     */
     Map<String, String> login(User user);
 
+    /**
+     * The method for logout.
+     */
     void logout();
 }

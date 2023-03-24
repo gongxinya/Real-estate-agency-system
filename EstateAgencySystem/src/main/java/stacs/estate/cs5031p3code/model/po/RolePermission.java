@@ -4,15 +4,24 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * The table for connecting role and permission
- * @TableName role_permission
+ * The RolePermission entity.
+ *
+ * @author 220032952
+ * @version 0.0.1
  */
-@TableName(value ="role_permission")
+@TableName(value = "role_permission")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RolePermission implements Serializable {
     /**
      * The id
@@ -30,6 +39,7 @@ public class RolePermission implements Serializable {
      */
     private Long permissionId;
 
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
@@ -46,8 +56,8 @@ public class RolePermission implements Serializable {
         }
         RolePermission other = (RolePermission) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()))
-            && (this.getPermissionId() == null ? other.getPermissionId() == null : this.getPermissionId().equals(other.getPermissionId()));
+                && (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()))
+                && (this.getPermissionId() == null ? other.getPermissionId() == null : this.getPermissionId().equals(other.getPermissionId()));
     }
 
     @Override

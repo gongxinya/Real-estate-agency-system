@@ -5,12 +5,13 @@
 <mapper namespace="stacs.estate.cs5031p3code.mapper.UserRoleMapper">
 
     <resultMap id="BaseResultMap" type="stacs.estate.cs5031p3code.model.po.UserRole">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="userId" column="user_id" jdbcType="BIGINT"/>
-            <result property="roleId" column="role_id" jdbcType="BIGINT"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="roleId" column="role_id" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,user_id,role_id
+        id
+        ,user_id,role_id
     </sql>
 </mapper>

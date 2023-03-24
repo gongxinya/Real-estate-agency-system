@@ -4,14 +4,19 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
+
 import lombok.Data;
 
 /**
- * The table for connecting user and role
- * @TableName user_role
+ * The UserRole entity.
+ *
+ * @author 220032952
+ * @version 0.0.1
  */
-@TableName(value ="user_role")
+@TableName(value = "user_role")
 @Data
 public class UserRole implements Serializable {
     /**
@@ -30,6 +35,7 @@ public class UserRole implements Serializable {
      */
     private Long roleId;
 
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
@@ -46,8 +52,8 @@ public class UserRole implements Serializable {
         }
         UserRole other = (UserRole) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
-            && (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()));
+                && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
+                && (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()));
     }
 
     @Override

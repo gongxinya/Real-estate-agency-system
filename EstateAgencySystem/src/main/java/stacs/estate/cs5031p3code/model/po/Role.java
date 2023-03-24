@@ -4,15 +4,24 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * The role table
- * @TableName role
+ * The Role entity.
+ *
+ * @author 220032952
+ * @version 0.0.1
  */
-@TableName(value ="role")
+@TableName(value = "role")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Role implements Serializable {
     /**
      * The id of role
@@ -30,6 +39,7 @@ public class Role implements Serializable {
      */
     private String roleKey;
 
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
@@ -46,8 +56,8 @@ public class Role implements Serializable {
         }
         Role other = (Role) that;
         return (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()))
-            && (this.getRoleName() == null ? other.getRoleName() == null : this.getRoleName().equals(other.getRoleName()))
-            && (this.getRoleKey() == null ? other.getRoleKey() == null : this.getRoleKey().equals(other.getRoleKey()));
+                && (this.getRoleName() == null ? other.getRoleName() == null : this.getRoleName().equals(other.getRoleName()))
+                && (this.getRoleKey() == null ? other.getRoleKey() == null : this.getRoleKey().equals(other.getRoleKey()));
     }
 
     @Override

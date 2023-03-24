@@ -5,11 +5,11 @@ import stacs.estate.cs5031p3code.model.po.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
-* @author hz65
-* @description 针对表【user(The user table)】的数据库操作Mapper
-* @createDate 2023-03-23 22:22:51
-* @Entity stacs.estate.cs5031p3code.model.po.User
-*/
+ * Mapper for database operations on the table [user].
+ *
+ * @author 220032952
+ * @version 0.0.1
+ */
 @Repository
 public interface UserMapper extends BaseMapper<User> {
 

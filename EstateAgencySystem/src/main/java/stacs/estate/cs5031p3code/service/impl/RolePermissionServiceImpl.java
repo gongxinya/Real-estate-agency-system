@@ -7,13 +7,14 @@ import stacs.estate.cs5031p3code.mapper.RolePermissionMapper;
 import org.springframework.stereotype.Service;
 
 /**
-* @author hz65
-* @description 针对表【role_permission(The table for connecting role and permission)】的数据库操作Service实现
-* @createDate 2023-03-23 22:22:51
-*/
+ * The implement of service for database operations on the role_permission table.
+ *
+ * @author 220032952
+ * @version 0.0.1
+ */
 @Service
 public class RolePermissionServiceImpl extends ServiceImpl<RolePermissionMapper, RolePermission>
-    implements RolePermissionService{
+        implements RolePermissionService {
 
 }
 

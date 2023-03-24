@@ -123,9 +123,7 @@
             <artifactId>mariadb-java-client</artifactId>
             <version>3.0.8</version>
         </dependency>
-
     </dependencies>
-
     <build>
         <plugins>
             <plugin>

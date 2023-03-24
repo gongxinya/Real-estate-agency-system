@@ -4,15 +4,24 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * The building table
- * @TableName building
+ * The Building entity.
+ *
+ * @author 220032952
+ * @version 0.0.1
  */
-@TableName(value ="building")
+@TableName(value = "building")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Building implements Serializable {
     /**
      * The id of building
@@ -26,10 +35,11 @@ public class Building implements Serializable {
     private String buildingName;
 
     /**
-     * The address of buidling
+     * The address of building
      */
     private String buildingAddress;
 
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
@@ -46,8 +56,8 @@ public class Building implements Serializable {
         }
         Building other = (Building) that;
         return (this.getBuildingId() == null ? other.getBuildingId() == null : this.getBuildingId().equals(other.getBuildingId()))
-            && (this.getBuildingName() == null ? other.getBuildingName() == null : this.getBuildingName().equals(other.getBuildingName()))
-            && (this.getBuildingAddress() == null ? other.getBuildingAddress() == null : this.getBuildingAddress().equals(other.getBuildingAddress()));
+                && (this.getBuildingName() == null ? other.getBuildingName() == null : this.getBuildingName().equals(other.getBuildingName()))
+                && (this.getBuildingAddress() == null ? other.getBuildingAddress() == null : this.getBuildingAddress().equals(other.getBuildingAddress()));
     }
 
     @Override

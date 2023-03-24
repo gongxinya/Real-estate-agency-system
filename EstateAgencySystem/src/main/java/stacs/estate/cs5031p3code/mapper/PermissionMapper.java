@@ -15,7 +15,13 @@ import java.util.List;
 @Repository
 public interface PermissionMapper extends BaseMapper<Permission> {
 
-    List<String> selectPermisssionsByUserId(Long userId);
+    /**
+     * The method for querying all permissions by user id.
+     *
+     * @param userId The user if.
+     * @return Return the permission list.
+     */
+    List<String> selectPermissionsByUserId(Long userId);
 }
 
 

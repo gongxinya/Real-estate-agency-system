@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
@@ -11,10 +13,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * The user table
- * @TableName user
+ * The User entity.
+ *
+ * @author 220032952
+ * @version 0.0.1
  */
-@TableName(value ="user")
+@TableName(value = "user")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -50,6 +54,7 @@ public class User implements Serializable {
      */
     private String userPassword;
 
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
@@ -66,11 +71,11 @@ public class User implements Serializable {
         }
         User other = (User) that;
         return (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
-            && (this.getUserName() == null ? other.getUserName() == null : this.getUserName().equals(other.getUserName()))
-            && (this.getUserPhone() == null ? other.getUserPhone() == null : this.getUserPhone().equals(other.getUserPhone()))
-            && (this.getUserEmail() == null ? other.getUserEmail() == null : this.getUserEmail().equals(other.getUserEmail()))
-            && (this.getUserAddress() == null ? other.getUserAddress() == null : this.getUserAddress().equals(other.getUserAddress()))
-            && (this.getUserPassword() == null ? other.getUserPassword() == null : this.getUserPassword().equals(other.getUserPassword()));
+                && (this.getUserName() == null ? other.getUserName() == null : this.getUserName().equals(other.getUserName()))
+                && (this.getUserPhone() == null ? other.getUserPhone() == null : this.getUserPhone().equals(other.getUserPhone()))
+                && (this.getUserEmail() == null ? other.getUserEmail() == null : this.getUserEmail().equals(other.getUserEmail()))
+                && (this.getUserAddress() == null ? other.getUserAddress() == null : this.getUserAddress().equals(other.getUserAddress()))
+                && (this.getUserPassword() == null ? other.getUserPassword() == null : this.getUserPassword().equals(other.getUserPassword()));
     }
 
     @Override

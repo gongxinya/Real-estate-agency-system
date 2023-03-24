@@ -4,15 +4,24 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * The permission table
- * @TableName permission
+ * The Permission entity.
+ *
+ * @author 220032952
+ * @version 0.0.1
  */
-@TableName(value ="permission")
+@TableName(value = "permission")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Permission implements Serializable {
     /**
      * The id of permission
@@ -30,6 +39,7 @@ public class Permission implements Serializable {
      */
     private String permissionKey;
 
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
@@ -46,8 +56,8 @@ public class Permission implements Serializable {
         }
         Permission other = (Permission) that;
         return (this.getPermissionId() == null ? other.getPermissionId() == null : this.getPermissionId().equals(other.getPermissionId()))
-            && (this.getPermissionName() == null ? other.getPermissionName() == null : this.getPermissionName().equals(other.getPermissionName()))
-            && (this.getPermissionKey() == null ? other.getPermissionKey() == null : this.getPermissionKey().equals(other.getPermissionKey()));
+                && (this.getPermissionName() == null ? other.getPermissionName() == null : this.getPermissionName().equals(other.getPermissionName()))
+                && (this.getPermissionKey() == null ? other.getPermissionKey() == null : this.getPermissionKey().equals(other.getPermissionKey()));
     }
 
     @Override

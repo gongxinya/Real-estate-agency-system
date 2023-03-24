@@ -4,17 +4,26 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * The flat table
- * @TableName flat
+ * The Flat entity.
+ *
+ * @author 220032952
+ * @version 0.0.1
  */
-@TableName(value ="flat")
+@TableName(value = "flat")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Flat implements Serializable {
     /**
      * The id of flat
@@ -52,6 +61,7 @@ public class Flat implements Serializable {
      */
     private Long userId;
 
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
@@ -68,12 +78,12 @@ public class Flat implements Serializable {
         }
         Flat other = (Flat) that;
         return (this.getFlatId() == null ? other.getFlatId() == null : this.getFlatId().equals(other.getFlatId()))
-            && (this.getFlatName() == null ? other.getFlatName() == null : this.getFlatName().equals(other.getFlatName()))
-            && (this.getFlatArea() == null ? other.getFlatArea() == null : this.getFlatArea().equals(other.getFlatArea()))
-            && (this.getFlatSoldOutDate() == null ? other.getFlatSoldOutDate() == null : this.getFlatSoldOutDate().equals(other.getFlatSoldOutDate()))
-            && (this.getFlatPrice() == null ? other.getFlatPrice() == null : this.getFlatPrice().equals(other.getFlatPrice()))
-            && (this.getBuildingId() == null ? other.getBuildingId() == null : this.getBuildingId().equals(other.getBuildingId()))
-            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()));
+                && (this.getFlatName() == null ? other.getFlatName() == null : this.getFlatName().equals(other.getFlatName()))
+                && (this.getFlatArea() == null ? other.getFlatArea() == null : this.getFlatArea().equals(other.getFlatArea()))
+                && (this.getFlatSoldOutDate() == null ? other.getFlatSoldOutDate() == null : this.getFlatSoldOutDate().equals(other.getFlatSoldOutDate()))
+                && (this.getFlatPrice() == null ? other.getFlatPrice() == null : this.getFlatPrice().equals(other.getFlatPrice()))
+                && (this.getBuildingId() == null ? other.getBuildingId() == null : this.getBuildingId().equals(other.getBuildingId()))
+                && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()));
     }
 
     @Override

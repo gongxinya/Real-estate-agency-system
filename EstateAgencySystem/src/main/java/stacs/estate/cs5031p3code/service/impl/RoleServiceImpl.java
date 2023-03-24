@@ -7,10 +7,11 @@ import stacs.estate.cs5031p3code.mapper.RoleMapper;
 import org.springframework.stereotype.Service;
 
 /**
-* @author hz65
-* @description 针对表【role(The role table)】的数据库操作Service实现
-* @createDate 2023-03-23 22:22:51
-*/
+ * The Service for database operations on the role table.
+ *
+ * @author 220032952
+ * @version 0.0.1
+ */
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
     implements RoleService{

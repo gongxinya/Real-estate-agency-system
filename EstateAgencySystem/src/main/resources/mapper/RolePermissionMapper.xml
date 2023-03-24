@@ -5,12 +5,13 @@
 <mapper namespace="stacs.estate.cs5031p3code.mapper.RolePermissionMapper">
 
     <resultMap id="BaseResultMap" type="stacs.estate.cs5031p3code.model.po.RolePermission">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="roleId" column="role_id" jdbcType="BIGINT"/>
-            <result property="permissionId" column="permission_id" jdbcType="BIGINT"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="roleId" column="role_id" jdbcType="BIGINT"/>
+        <result property="permissionId" column="permission_id" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,role_id,permission_id
+        id
+        ,role_id,permission_id
     </sql>
 </mapper>

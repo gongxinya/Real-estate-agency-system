@@ -27,13 +27,11 @@ public class RedisConfiguration {
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         var template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
-        // New a FastJsonRedisSerialiser.
+        // New a FastJsonRedisSerializer.
         var serializer = new FastJsonRedisSerialiser(Object.class);
-
         // Using StringRedisSerializer to serialize and deserialize the key.
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(serializer);
-
         // The key of Hash also uses the way of StringRedisSerializer.
         template.setHashKeySerializer(new StringRedisSerializer());
         template.setHashValueSerializer(serializer);

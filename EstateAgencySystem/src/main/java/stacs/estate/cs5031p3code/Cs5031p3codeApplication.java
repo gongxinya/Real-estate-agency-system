@@ -5,6 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
+ * The SpringBoot starter.
+ *
  * @author 220032952
  * @version 0.0.1
  */

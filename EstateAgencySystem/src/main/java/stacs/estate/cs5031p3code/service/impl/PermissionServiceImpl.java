@@ -7,13 +7,14 @@ import stacs.estate.cs5031p3code.mapper.PermissionMapper;
 import org.springframework.stereotype.Service;
 
 /**
-* @author hz65
-* @description 针对表【permission(The permission table)】的数据库操作Service实现
-* @createDate 2023-03-23 22:22:51
-*/
+ * The implement of service for database operations on the permission table.
+ *
+ * @author 220032952
+ * @version 0.0.1
+ */
 @Service
 public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission>
-    implements PermissionService{
+        implements PermissionService {
 
 }
 

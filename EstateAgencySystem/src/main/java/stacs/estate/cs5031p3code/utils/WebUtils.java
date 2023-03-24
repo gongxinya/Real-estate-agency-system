@@ -1,25 +1,32 @@
 package stacs.estate.cs5031p3code.utils;
 
+import org.springframework.http.HttpStatus;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * A class for web application.
+ *
+ * @author 220032952
+ * @version 0.0.1
+ */
 public class WebUtils {
+
     /**
-     * 将字符串渲染到客户端
+     * Rendering strings to the client.
      *
-     * @param response 渲染对象
-     * @param string   待渲染的字符串
-     * @return null
+     * @param response Rendering object.
+     * @param string   Rendering string.
      */
-    public static String renderString(HttpServletResponse response, String string) {
+    public static void renderString(HttpServletResponse response, String string) {
         try {
-            response.setStatus(200);
+            response.setStatus(HttpStatus.OK.value());
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
             response.getWriter().print(string);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
 }

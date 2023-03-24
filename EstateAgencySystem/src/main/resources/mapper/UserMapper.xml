@@ -5,16 +5,17 @@
 <mapper namespace="stacs.estate.cs5031p3code.mapper.UserMapper">
 
     <resultMap id="BaseResultMap" type="stacs.estate.cs5031p3code.model.po.User">
-            <id property="userId" column="user_id" jdbcType="BIGINT"/>
-            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
-            <result property="userPhone" column="user_phone" jdbcType="VARCHAR"/>
-            <result property="userEmail" column="user_email" jdbcType="VARCHAR"/>
-            <result property="userAddress" column="user_address" jdbcType="VARCHAR"/>
-            <result property="userPassword" column="user_password" jdbcType="VARCHAR"/>
+        <id property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="userPhone" column="user_phone" jdbcType="VARCHAR"/>
+        <result property="userEmail" column="user_email" jdbcType="VARCHAR"/>
+        <result property="userAddress" column="user_address" jdbcType="VARCHAR"/>
+        <result property="userPassword" column="user_password" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        user_id,user_name,user_phone,
+        user_id
+        ,user_name,user_phone,
         user_email,user_address,user_password
     </sql>
 </mapper>

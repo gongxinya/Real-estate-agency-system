@@ -5,12 +5,13 @@
 <mapper namespace="stacs.estate.cs5031p3code.mapper.BuildingMapper">
 
     <resultMap id="BaseResultMap" type="stacs.estate.cs5031p3code.model.po.Building">
-            <id property="buildingId" column="building_id" jdbcType="BIGINT"/>
-            <result property="buildingName" column="building_name" jdbcType="VARCHAR"/>
-            <result property="buildingAddress" column="building_address" jdbcType="VARCHAR"/>
+        <id property="buildingId" column="building_id" jdbcType="BIGINT"/>
+        <result property="buildingName" column="building_name" jdbcType="VARCHAR"/>
+        <result property="buildingAddress" column="building_address" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        building_id,building_name,building_address
+        building_id
+        ,building_name,building_address
     </sql>
 </mapper>

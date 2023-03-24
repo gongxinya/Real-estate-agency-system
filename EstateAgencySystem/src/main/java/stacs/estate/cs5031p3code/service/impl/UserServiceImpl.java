@@ -18,41 +18,67 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * @author hz65
- * @description 针对表【user(The user table)】的数据库操作Service实现
- * @createDate 2023-03-23 22:22:51
+ * The implement of service for database operations on the user table.
+ *
+ * @author 220032952
+ * @version 0.0.1
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         implements UserService {
 
+    /**
+     * The manager of Authentication.
+     */
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    /**
+     * The cache of redis.
+     */
     @Autowired
     private RedisCache redisCache;
 
+    /**
+     * The method for login.
+     *
+     * @param user The user information.
+     * @return Return the user_key.
+     */
     @Override
     public Map<String, String> login(User user) {
         var authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserEmail(), user.getUserPassword());
+        // Get the authentication object.
         var authentication = this.authenticationManager.authenticate(authenticationToken);
+        // Login failed.
         if (Objects.isNull(authentication)) {
             throw new RuntimeException("Login failed!");
         }
+        // Get the authentication user.
         var securityUser = (SecurityUser) authentication.getPrincipal();
+        // Get user id.
         var userId = securityUser.getUser().getUserId().toString();
+        // Generate the JWT.
         var jwt = JwtUtil.createJWT(userId);
         var tokenMap = new HashMap<String, String>();
         tokenMap.put("user_key", jwt);
+        // Store the JWT to redis.
         redisCache.setCacheObject(userId, securityUser);
         return tokenMap;
     }
 
+    /**
+     * The method for logout.
+     */
     @Override
     public void logout() {
+        // Get the authentication information.
         var authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        // Get the current user.
         var securityUser = (SecurityUser) authentication.getPrincipal();
+        // Get user id.
         var userId = securityUser.getUser().getUserId().toString();
+        // Delete the user id from redis.
         redisCache.deleteObject(userId);
     }
 }

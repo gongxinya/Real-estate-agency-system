@@ -13,9 +13,10 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 /**
- * A class for representing Redis using FastJson serialisation
+ * A class for representing Redis using FastJson serialisation.
  *
  * @author 220032952
+ * @version 0.0.1
  */
 public class FastJsonRedisSerialiser<T> implements RedisSerializer<T> {
 

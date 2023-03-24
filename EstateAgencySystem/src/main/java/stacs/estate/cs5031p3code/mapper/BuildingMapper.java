@@ -1,14 +1,16 @@
 package stacs.estate.cs5031p3code.mapper;
 
+import org.springframework.stereotype.Repository;
 import stacs.estate.cs5031p3code.model.po.Building;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
-* @author hz65
-* @description 针对表【building(The building table)】的数据库操作Mapper
-* @createDate 2023-03-23 22:22:51
-* @Entity stacs.estate.cs5031p3code.model.po.Building
-*/
+ * Database operation Mapper for the table [building].
+ *
+ * @author 220032952
+ * @version 0.0.1
+ */
+@Repository
 public interface BuildingMapper extends BaseMapper<Building> {
 
 }

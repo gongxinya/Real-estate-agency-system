@@ -13,15 +13,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * A handler for handling the exception about Authentication.
+ *
+ * @author 220032952
+ * @version 0.0.1
+ */
 @Component
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
+
+    /**
+     * Override the commence method.
+     *
+     * @param request       Http request.
+     * @param response      Http response.
+     * @param authException The authException object.
+     * @throws IOException      The IOException object.
+     * @throws ServletException The ServletException object.
+     */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        //处理异常
+        // Handle exception.
         WebUtils.renderString(response, JSON.toJSONString(
                 ResponseResult.<Void>builder()
                         .data(null)
-                        .message("Authentication Failed!")
+                        .message(authException.getMessage())
                         .code(HttpStatus.UNAUTHORIZED.value())
                         .build()
         ));

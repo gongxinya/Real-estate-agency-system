@@ -15,54 +15,88 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import stacs.estate.cs5031p3code.filter.JwtAuthenticationTokenFilter;
 
+/**
+ * A configuration class for configuring Spring Security.
+ *
+ * @author 220032952
+ * @version 0.0.1
+ */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    //创建BCryptPasswordEncoder注入容器
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+    /**
+     * The filter for JWT Authentication.
+     */
     @Autowired
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
+    /**
+     * The handler for handling with the exception about Authentication.
+     */
     @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;
 
+    /**
+     * The handler for handling with the exception about Authorization.
+     */
     @Autowired
     private AccessDeniedHandler accessDeniedHandler;
 
+    /**
+     * Override the configure method for using project own configuration.
+     *
+     * @param http The HttpSecurity object.
+     * @throws Exception The Exception object.
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // Configure such configuration about authentication.
         http
-                //关闭csrf
+                // Disable csrf.
                 .csrf().disable()
-                //不通过Session获取SecurityContext
+                // Get the SecurityContext without the Session.
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                // 对于登录接口 允许匿名访问
+                // For the login interface, allowing anonymous access.
                 .antMatchers("/user/login").anonymous()
-                // 除上面外的所有请求全部需要鉴权认证
+                // All requests other than the above require forensic authentication.
                 .anyRequest().authenticated();
 
-        //添加过滤器
+        // Add the JWT filter when system does authentication.
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
-        //配置异常处理器
+        // Configuring the exception handler.
         http.exceptionHandling()
-                //配置认证失败处理器
+                // Configuring the authentication failure handler.
                 .authenticationEntryPoint(authenticationEntryPoint)
+                // Configuring the authorization failure handler.
                 .accessDeniedHandler(accessDeniedHandler);
 
-        //允许跨域
+        // Allow CORS in Spring Security.
         http.cors();
     }
 
+    /**
+     * The method for getting the AuthenticationManager object.
+     *
+     * @return Return the AuthenticationManager object.
+     * @throws Exception The Exception object.
+     */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    /**
+     * The method for creating BCryptPasswordEncoder.
+     *
+     * @return return the PasswordEncoder.
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

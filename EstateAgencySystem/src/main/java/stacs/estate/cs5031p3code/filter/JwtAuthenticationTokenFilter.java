@@ -1,6 +1,5 @@
 package stacs.estate.cs5031p3code.filter;
 
-import io.jsonwebtoken.Claims;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,39 +18,58 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * A filter for handling with JWT.
+ *
+ * @author 220032952
+ * @version 0.0.1
+ */
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
+    /**
+     * Getting the redis cache.
+     */
     @Autowired
     private RedisCache redisCache;
 
+    /**
+     * Override the method for implementing JWT handling logic.
+     *
+     * @param request     Http request.
+     * @param response    Http response.
+     * @param filterChain The filter chain.
+     * @throws ServletException The ServletException object.
+     * @throws IOException      The IOException object.
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {
-        // Get the user_key
+        // Get the user_key in request header.
         var token = request.getHeader("user_key");
+        // If the request does not have user_key.
         if (!StringUtils.hasText(token)) {
-            // pass
+            // Release the filter.
             filterChain.doFilter(request, response);
             return;
         }
-        // parse user_key
-        String userid;
+        // If the request has user_key, parsing user_key.
+        String userId;
         try {
             var claims = JwtUtil.parseJWT(token);
-            userid = claims.getSubject();
+            userId = claims.getSubject();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("User key is invalid!");
         }
-        // get user information in redis
-        SecurityUser securityUser = redisCache.getCacheObject(userid);
+        // Get user information in redis by userId.
+        SecurityUser securityUser = redisCache.getCacheObject(userId);
         if (Objects.isNull(securityUser)) {
             throw new RuntimeException("User is not login!");
         }
-        //存入SecurityContextHolder
+        // Verify token successfully, store into SecurityContextHolder.
         var authenticationToken = new UsernamePasswordAuthenticationToken(securityUser, null, securityUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        //放行
+        // Release the filter.
         filterChain.doFilter(request, response);
     }
 }

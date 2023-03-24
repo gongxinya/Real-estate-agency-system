@@ -13,11 +13,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * A handler for handling the exception about Authorization.
+ *
+ * @author 220032952
+ * @version 0.0.1
+ */
 @Component
 public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
+
+    /**
+     * Override the handle method.
+     *
+     * @param request               Http request.
+     * @param response              Http response.
+     * @param accessDeniedException The accessDeniedException object.
+     * @throws IOException      The IOException object.
+     * @throws ServletException The ServletException object.
+     */
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        //处理异常
+        // Handle exception.
         WebUtils.renderString(response, JSON.toJSONString(
                 ResponseResult.<Void>builder()
                         .data(null)

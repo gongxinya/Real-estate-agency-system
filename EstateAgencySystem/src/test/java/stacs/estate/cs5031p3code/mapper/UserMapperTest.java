@@ -1,5 +1,6 @@
 package stacs.estate.cs5031p3code.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,8 +19,10 @@ public class UserMapperTest {
 
     @Test
     public void testUser(){
-        List<User> users = userMapper.selectList(null);
-        System.out.println(users);
+        var queryWrapper = new LambdaQueryWrapper<User>();
+        queryWrapper.eq(User::getUserEmail, "hz65@st-andrews.ac.uk");
+        var user = userMapper.selectOne(queryWrapper);
+        System.out.println(user);
     }
 
     @Test

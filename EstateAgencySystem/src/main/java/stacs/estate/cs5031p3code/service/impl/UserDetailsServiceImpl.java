@@ -32,7 +32,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(Objects.isNull(user)){
             throw new RuntimeException("Email or password is error!");
         }
-
         var list = permissionMapper.selectPermisssionsByUserId(user.getUserId());
         //把数据封装成UserDetails返回
         return new SecurityUser(user, list);

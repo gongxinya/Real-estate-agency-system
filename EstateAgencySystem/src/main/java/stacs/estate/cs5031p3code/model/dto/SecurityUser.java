@@ -2,6 +2,7 @@ package stacs.estate.cs5031p3code.model.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,6 +22,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class SecurityUser implements UserDetails {
 
     /**
@@ -38,17 +40,6 @@ public class SecurityUser implements UserDetails {
      */
     @JSONField(serialize = false)
     private List<SimpleGrantedAuthority> authorities;
-
-    /**
-     * The constructor method.
-     *
-     * @param user        User object.
-     * @param permissions Permissions.
-     */
-    public SecurityUser(User user, List<String> permissions) {
-        this.user = user;
-        this.permissions = permissions;
-    }
 
     /**
      * Override the method for getting all authorities.

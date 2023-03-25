@@ -61,6 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // For the login interface, allowing anonymous access.
                 .antMatchers("/user/login").anonymous()
+                .antMatchers("/user/create").anonymous()
                 // All requests other than the above require forensic authentication.
                 .anyRequest().authenticated();
 

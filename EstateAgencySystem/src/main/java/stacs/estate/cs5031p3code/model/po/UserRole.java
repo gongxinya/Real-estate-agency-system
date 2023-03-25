@@ -8,7 +8,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serial;
 import java.io.Serializable;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * The UserRole entity.
@@ -18,6 +21,9 @@ import lombok.Data;
  */
 @TableName(value = "user_role")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class UserRole implements Serializable {
     /**
      * The if

@@ -55,6 +55,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // Find the permission list.
         var list = permissionMapper.selectPermissionsByUserId(user.getUserId());
         // Encapsulate a SecurityUser object.
-        return new SecurityUser(user, list);
+        return SecurityUser.builder()
+                .user(user)
+                .permissions(list)
+                .build();
     }
 }

@@ -46,7 +46,7 @@ public class JwtUtil {
      * @return Return a JWT.
      */
     public static String createJWT(String subject) {
-        JwtBuilder builder = getJwtBuilder(subject, null, getUUID());// set expired time.
+        var builder = getJwtBuilder(subject, null, getUUID());// set expired time.
         return builder.compact();
     }
 
@@ -58,7 +58,7 @@ public class JwtUtil {
      * @return Return a JWT.
      */
     public static String createJWT(String subject, Long ttlMillis) {
-        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, getUUID());// set expired time.
+        var builder = getJwtBuilder(subject, ttlMillis, getUUID());// set expired time.
         return builder.compact();
     }
 
@@ -71,15 +71,15 @@ public class JwtUtil {
      * @return Return a JWT builder.
      */
     private static JwtBuilder getJwtBuilder(String subject, Long ttlMillis, String uuid) {
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-        SecretKey secretKey = generalKey();
-        long nowMillis = System.currentTimeMillis();
-        Date now = new Date(nowMillis);
+        var signatureAlgorithm = SignatureAlgorithm.HS256;
+        var secretKey = generalKey();
+        var nowMillis = System.currentTimeMillis();
+        var now = new Date(nowMillis);
         if (ttlMillis == null) {
             ttlMillis = JwtUtil.JWT_TTL;
         }
-        long expMillis = nowMillis + ttlMillis;
-        Date expDate = new Date(expMillis);
+        var expMillis = nowMillis + ttlMillis;
+        var expDate = new Date(expMillis);
         return Jwts.builder()
                 .setId(uuid)              // UUID
                 .setSubject(subject)   // JSON data
@@ -98,7 +98,7 @@ public class JwtUtil {
      * @return Return a JWT.
      */
     public static String createJWT(String id, String subject, Long ttlMillis) {
-        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, id);// set expired time.
+        var builder = getJwtBuilder(subject, ttlMillis, id);// set expired time.
         return builder.compact();
     }
 
@@ -108,7 +108,7 @@ public class JwtUtil {
      * @return Return the secret key.
      */
     public static SecretKey generalKey() {
-        byte[] encodedKey = Base64.getDecoder().decode(JwtUtil.JWT_KEY);
+        var encodedKey = Base64.getDecoder().decode(JwtUtil.JWT_KEY);
         return new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
     }
 
@@ -120,7 +120,7 @@ public class JwtUtil {
      * @throws Exception The Exception object.
      */
     public static Claims parseJWT(String jwt) throws Exception {
-        SecretKey secretKey = generalKey();
+        var secretKey = generalKey();
         return Jwts.parser()
                 .setSigningKey(secretKey)
                 .parseClaimsJws(jwt)

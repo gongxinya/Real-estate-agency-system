@@ -45,7 +45,7 @@
 * Role
   * All
 * Authority
-  * user:create
+  * None
 
 ### Delete user by user id
 

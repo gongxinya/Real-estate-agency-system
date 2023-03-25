@@ -10,19 +10,15 @@ server:
 spring:
   # The configuration of persistent database.
   datasource:
-    url: jdbc:mysql://localhost:3306/estate_agency_system?characterEncoding=utf-8&serverTimezone=UTC
-    #    url: jdbc:mariadb://hz65.host.cs.st-andrews.ac.uk:3306/hz65_estate_agency_system?characterEncoding=utf-8&serverTimezone=UTC
+    url: jdbc:mysql://8.208.112.119:13078/estate_agency_system?characterEncoding=utf-8&serverTimezone=UTC
     username: root
-    #    username: hz65
-    password: 123456
-    #    password: 875J3kAG0w1.Pb
+    password: BKbU8BQzQPhm0wetAI
     driver-class-name: com.mysql.cj.jdbc.Driver
-  #    driver-class-name: org.mariadb.jdbc.Driver
   # The configuration of redis.
   redis:
-    host: 127.0.0.1
-    port: 6379
-    username: Henry
+    host: 8.208.112.119
+    port: 19047
+    password: B8vgLBK4Bg322xh2
 
 # The configuration of MybatisPlus
 mybatis-plus:

@@ -12,7 +12,7 @@ import stacs.estate.cs5031p3code.utils.ResponseResult;
 import java.util.List;
 
 /**
- * A class for handling with all API about user.
+ * A class for handling with all API about building.
  *
  * @author 220032952
  * @version 0.0.1

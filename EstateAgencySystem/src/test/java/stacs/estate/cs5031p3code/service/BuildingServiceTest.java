@@ -94,7 +94,7 @@ public class BuildingServiceTest {
         actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
 
-        // 4. Delete successful!
+        // 4. Delete successful
         Long buildingId4 = 4L;
         assertDoesNotThrow(() -> {
             buildingService.deleteBuildingById(buildingId4);

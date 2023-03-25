@@ -35,10 +35,7 @@ public class UserServiceTest {
      */
     @Test
     public void testLogin() {
-        var user = User.builder()
-                .userEmail("hz65@st-andrews.ac.uk")
-                .userPassword("1234")
-                .build();
+        var user = User.builder().userEmail("hz65@st-andrews.ac.uk").userPassword("1234").build();
         var map = userService.login(user);
         assertNotNull(map);
         assertNotNull(map.get("user_key"));
@@ -50,11 +47,7 @@ public class UserServiceTest {
     @Test
     public void testRegister() {
         // 1. User properties are null.
-        var user1 = User.builder()
-                .userEmail("")
-                .userName("")
-                .userPassword(null)
-                .build();
+        var user1 = User.builder().userEmail("").userName("").userPassword(null).build();
         var exception = assertThrows(EstateException.class, () -> {
             userService.register(user1);
         });
@@ -63,11 +56,7 @@ public class UserServiceTest {
         assertEquals(expectedMessage, actualMessage);
 
         // 2. The user email is existed.
-        var user2 = User.builder()
-                .userEmail("hz65@st-andrews.ac.uk")
-                .userName("Henry")
-                .userPassword(passwordEncoder.encode("1234"))
-                .build();
+        var user2 = User.builder().userEmail("hz65@st-andrews.ac.uk").userName("Henry").userPassword(passwordEncoder.encode("1234")).build();
         exception = assertThrows(EstateException.class, () -> {
             userService.register(user2);
         });
@@ -77,11 +66,7 @@ public class UserServiceTest {
 
 
         // 3. Register successful!
-        var user3 = User.builder()
-                .userEmail("jw384@st-andrews.ac.uk")
-                .userName("Jiaxin")
-                .userPassword(passwordEncoder.encode("1234"))
-                .build();
+        var user3 = User.builder().userEmail("jw384@st-andrews.ac.uk").userName("Jiaxin").userPassword(passwordEncoder.encode("1234")).build();
         assertDoesNotThrow(() -> {
             userService.register(user3);
         });
@@ -132,9 +117,7 @@ public class UserServiceTest {
     @Test
     public void testUpdateUserByUserId() {
         // 1. User or user id is empty
-        var user1 = User.builder()
-                .userId(null)
-                .build();
+        var user1 = User.builder().userId(null).build();
         var exception = assertThrows(EstateException.class, () -> {
             userService.updateUserByUserId(user1.getUserId(), user1);
         });
@@ -143,10 +126,7 @@ public class UserServiceTest {
         assertEquals(expectedMessage, actualMessage);
 
         // 2. User email is existed!
-        var user2 = User.builder()
-                .userId(2L)
-                .userEmail("hz65@st-andrews.ac.uk")
-                .build();
+        var user2 = User.builder().userId(2L).userEmail("hz65@st-andrews.ac.uk").build();
         exception = assertThrows(EstateException.class, () -> {
             userService.updateUserByUserId(user2.getUserId(), user2);
         });
@@ -155,10 +135,7 @@ public class UserServiceTest {
         assertEquals(expectedMessage, actualMessage);
 
         // 3. User email can not be empty.
-        var user3 = User.builder()
-                .userId(2L)
-                .userEmail("")
-                .build();
+        var user3 = User.builder().userId(2L).userEmail("").build();
         exception = assertThrows(EstateException.class, () -> {
             userService.updateUserByUserId(user3.getUserId(), user3);
         });
@@ -167,10 +144,7 @@ public class UserServiceTest {
         assertEquals(expectedMessage, actualMessage);
 
         // 4. Update successful!
-        var user4 = User.builder()
-                .userId(1L)
-                .userPhone("110")
-                .build();
+        var user4 = User.builder().userId(1L).userPhone("110").build();
         assertDoesNotThrow(() -> {
             userService.updateUserByUserId(user4.getUserId(), user4);
         });

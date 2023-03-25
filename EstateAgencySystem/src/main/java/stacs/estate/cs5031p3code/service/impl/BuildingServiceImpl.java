@@ -31,6 +31,9 @@ public class BuildingServiceImpl extends ServiceImpl<BuildingMapper, Building>
     @Autowired
     private BuildingMapper buildingMapper;
 
+    /**
+     * The flat mapper.
+     */
     @Autowired
     private FlatMapper flatMapper;
 
@@ -106,7 +109,7 @@ public class BuildingServiceImpl extends ServiceImpl<BuildingMapper, Building>
             throw new EstateException("Building or building id is empty!");
         }
 
-        // Keep the uniqueness of user email.
+        // Keep the uniqueness of building name.
         if (!Objects.isNull(building.getBuildingName())) {
             if (StringUtils.hasText(building.getBuildingName())) {
                 this.checkBuildingName(building);
@@ -115,7 +118,7 @@ public class BuildingServiceImpl extends ServiceImpl<BuildingMapper, Building>
             }
         }
 
-        // Update user.
+        // Update building.
         building.setBuildingId(buildingId);
         var result = this.updateById(building);
         if (!result) {

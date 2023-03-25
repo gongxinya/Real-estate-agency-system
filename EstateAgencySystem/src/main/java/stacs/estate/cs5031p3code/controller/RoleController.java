@@ -5,39 +5,39 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import stacs.estate.cs5031p3code.exception.EstateException;
-import stacs.estate.cs5031p3code.model.po.Building;
-import stacs.estate.cs5031p3code.service.BuildingService;
+import stacs.estate.cs5031p3code.model.po.Role;
+import stacs.estate.cs5031p3code.service.RoleService;
 import stacs.estate.cs5031p3code.utils.ResponseResult;
 
 import java.util.List;
 
 /**
- * A class for handling with all API about building.
+ * A class for handling with all API about role.
  *
  * @author 220032952
  * @version 0.0.1
  */
 @RestController
-@RequestMapping("/building")
-public class BuildingController {
+@RequestMapping("/role")
+public class RoleController {
 
     /**
-     * The building service.
+     * The role service.
      */
     @Autowired
-    private BuildingService buildingService;
+    private RoleService roleService;
 
     /**
-     * The method for creating new building.
+     * The method for creating role.
      *
-     * @param building The building object.
+     * @param role The role.
      * @return Return the result.
      */
     @PostMapping("/create")
-    @PreAuthorize("hasAuthority('building:create')")
-    public ResponseResult<Void> createBuilding(@RequestBody Building building) {
+    @PreAuthorize("hasAuthority('role:create')")
+    public ResponseResult<Void> createRole(@RequestBody Role role) {
         try {
-            this.buildingService.createBuilding(building);
+            this.roleService.createRole(role);
         } catch (EstateException e) {
             return ResponseResult.<Void>builder()
                     .data(null)
@@ -53,16 +53,16 @@ public class BuildingController {
     }
 
     /**
-     * The method for deleting building by building id.
+     * The method for deleting role.
      *
-     * @param buildingId The building id.
+     * @param roleId The role id.
      * @return Return the result.
      */
-    @DeleteMapping("/delete/{buildingId}")
-    @PreAuthorize("hasAuthority('building:delete')")
-    public ResponseResult<Void> deleteBuildingById(@PathVariable Long buildingId) {
+    @DeleteMapping("/delete/{roleId}")
+    @PreAuthorize("hasAuthority('role:delete')")
+    public ResponseResult<Void> deleteRoleByRoleId(@PathVariable Long roleId) {
         try {
-            this.buildingService.deleteBuildingById(buildingId);
+            this.roleService.deleteRoleByRoleId(roleId);
         } catch (EstateException e) {
             return ResponseResult.<Void>builder()
                     .data(null)
@@ -78,16 +78,16 @@ public class BuildingController {
     }
 
     /**
-     * The method for updating building by building id.
+     * The method for updating role by role id.
      *
-     * @param buildingId The building id.
+     * @param roleId role id.
      * @return Return the result.
      */
-    @PutMapping("/update/{buildingId}")
-    @PreAuthorize("hasAuthority('building:update')")
-    public ResponseResult<Void> updateBuildingByBuildingId(@PathVariable Long buildingId, @RequestBody Building building) {
+    @PutMapping("/update/{roleId}")
+    @PreAuthorize("hasAuthority('role:update')")
+    public ResponseResult<Void> updateBuildingByBuildingId(@PathVariable Long roleId, @RequestBody Role role) {
         try {
-            this.buildingService.updateBuildingByBuildingId(buildingId, building);
+            this.roleService.updateRoleByRoleId(roleId, role);
         } catch (EstateException e) {
             return ResponseResult.<Void>builder()
                     .data(null)
@@ -103,26 +103,26 @@ public class BuildingController {
     }
 
     /**
-     * The method for getting building list.
+     * The method for getting role list.
      *
-     * @return Return the building list.
+     * @return Return the role list.
      */
     @GetMapping("/list")
-    @PreAuthorize("hasAuthority('building:list')")
-    public ResponseResult<List<Building>> listBuilding() {
-        List<Building> buildingList;
+    @PreAuthorize("hasAuthority('role:list')")
+    public ResponseResult<List<Role>> listRole() {
+        List<Role> roleList;
         try {
-            buildingList = this.buildingService.getBuildingList();
+            roleList = this.roleService.getRoleList();
         } catch (EstateException e) {
-            return ResponseResult.<List<Building>>builder()
+            return ResponseResult.<List<Role>>builder()
                     .data(null)
                     .message(e.getMessage())
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .build();
         }
-        return ResponseResult.<List<Building>>builder()
-                .data(buildingList)
-                .message("Getting building list is successful!")
+        return ResponseResult.<List<Role>>builder()
+                .data(roleList)
+                .message("Getting role list is successful!")
                 .code(HttpStatus.OK.value())
                 .build();
     }

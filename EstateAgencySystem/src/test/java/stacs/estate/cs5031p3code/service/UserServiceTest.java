@@ -154,13 +154,25 @@ public class UserServiceTest {
         actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
 
-        // 3. Update successful!
+        // 3. User email can not be empty.
         var user3 = User.builder()
+                .userId(2L)
+                .userEmail("")
+                .build();
+        exception = assertThrows(EstateException.class, () -> {
+            userService.updateUserByUserId(user3.getUserId(), user3);
+        });
+        expectedMessage = "User email cannot be empty!";
+        actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+
+        // 4. Update successful!
+        var user4 = User.builder()
                 .userId(1L)
                 .userPhone("110")
                 .build();
         assertDoesNotThrow(() -> {
-            userService.updateUserByUserId(user3.getUserId(), user3);
+            userService.updateUserByUserId(user4.getUserId(), user4);
         });
     }
 

@@ -82,7 +82,7 @@ public class UserController {
             return ResponseResult.<Void>builder()
                     .data(null)
                     .message(e.getMessage())
-                    .code(HttpStatus.UNAUTHORIZED.value())
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .build();
         }
         return ResponseResult.<Void>builder()
@@ -91,7 +91,6 @@ public class UserController {
                 .code(HttpStatus.OK.value())
                 .build();
     }
-
 
     /**
      * The method for deleting user by user id.
@@ -108,7 +107,7 @@ public class UserController {
             return ResponseResult.<Void>builder()
                     .data(null)
                     .message(e.getMessage())
-                    .code(HttpStatus.UNAUTHORIZED.value())
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .build();
         }
         return ResponseResult.<Void>builder()
@@ -134,7 +133,7 @@ public class UserController {
             return ResponseResult.<Void>builder()
                     .data(null)
                     .message(e.getMessage())
-                    .code(HttpStatus.UNAUTHORIZED.value())
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .build();
         }
         return ResponseResult.<Void>builder()
@@ -161,7 +160,7 @@ public class UserController {
             return ResponseResult.<Void>builder()
                     .data(null)
                     .message(e.getMessage())
-                    .code(HttpStatus.UNAUTHORIZED.value())
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .build();
         }
         return ResponseResult.<Void>builder()
@@ -186,7 +185,7 @@ public class UserController {
             return ResponseResult.<List<User>>builder()
                     .data(null)
                     .message(e.getMessage())
-                    .code(HttpStatus.UNAUTHORIZED.value())
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .build();
         }
         return ResponseResult.<List<User>>builder()
@@ -195,7 +194,6 @@ public class UserController {
                 .code(HttpStatus.OK.value())
                 .build();
     }
-
 
     /**
      * The method for user list.
@@ -212,7 +210,7 @@ public class UserController {
             return ResponseResult.<User>builder()
                     .data(null)
                     .message(e.getMessage())
-                    .code(HttpStatus.UNAUTHORIZED.value())
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .build();
         }
         return ResponseResult.<User>builder()

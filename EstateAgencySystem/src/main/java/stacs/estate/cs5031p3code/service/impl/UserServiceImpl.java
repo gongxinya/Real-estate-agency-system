@@ -236,10 +236,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
 
         // Keep the uniqueness of user email.
-        if (StringUtils.hasText(user.getUserEmail())) {
-            this.checkUserEmail(user);
-        } else {
-            throw new EstateException("User email cannot be empty!");
+        if (!Objects.isNull(user.getUserEmail())) {
+            if (StringUtils.hasText(user.getUserEmail())) {
+                this.checkUserEmail(user);
+            } else {
+                throw new EstateException("User email cannot be empty!");
+            }
         }
 
         // Update user.
@@ -259,7 +261,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public List<User> getUserList() throws EstateException {
         var userList = userMapper.selectList(null);
         // user list is empty.
-        if (userList == null || userList.size() == 0) {
+        if (Objects.isNull(userList) || userList.size() == 0) {
             throw new EstateException("User list is empty!");
         }
         return userList;

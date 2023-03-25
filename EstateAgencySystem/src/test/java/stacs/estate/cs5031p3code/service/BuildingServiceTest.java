@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import stacs.estate.cs5031p3code.exception.EstateException;
 import stacs.estate.cs5031p3code.model.po.Building;
-import stacs.estate.cs5031p3code.model.po.User;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -3,7 +3,6 @@ package stacs.estate.cs5031p3code.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.util.StringUtils;
 import stacs.estate.cs5031p3code.exception.EstateException;
 import stacs.estate.cs5031p3code.mapper.FlatMapper;

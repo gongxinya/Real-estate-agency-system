@@ -40,6 +40,6 @@
 * building_id bigint not_null
 * user_id bigint
 * flat_name varchar not_null
-* flat_area varchar not_null
+* flat_area decimal not_null
 * flat_sold_out_date datetime
 * flat_price decimal

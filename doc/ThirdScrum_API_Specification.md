@@ -1,5 +1,22 @@
 # The API Specification
 
+## Request
+
+* Get: Pathvariable
+* Post/ Put/ Delete: Pathvariable + RequestBody
+* Without token/ with token
+
+## Response
+
+* Code
+  * 200: OK
+  * 401: No authentication
+  * 403: Permission denied
+  * 500: Server error
+* Message
+* Data
+  * T: Building, Role,...., List(Role)
+
 ## User
 
 ### Login
@@ -62,7 +79,7 @@
 * Authority
   * user:delete
 
-### Update user
+### Update user (profile)
 
 * Request
   * Method: Put

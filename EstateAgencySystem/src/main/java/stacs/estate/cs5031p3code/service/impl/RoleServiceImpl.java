@@ -129,7 +129,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
             }
         }
 
-        // Update building.
+        // Update role.
         role.setRoleId(roleId);
         var result = this.updateById(role);
         if (!result) {

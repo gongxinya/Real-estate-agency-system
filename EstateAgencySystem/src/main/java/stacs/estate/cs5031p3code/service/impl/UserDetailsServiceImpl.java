@@ -53,7 +53,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new RuntimeException("Email or password is error!");
         }
         // Find the permission list.
-        var list = permissionMapper.selectPermissionsByUserId(user.getUserId());
+        var list = permissionMapper.selectPermissionKeysByUserId(user.getUserId());
         // Encapsulate a SecurityUser object.
         return SecurityUser.builder()
                 .user(user)

@@ -56,7 +56,7 @@ public class FlatServiceImpl extends ServiceImpl<FlatMapper, Flat>
         flat.setBuildingId(buildingId);
 
         // Check the building id.
-        this.selectBuildingByBuildingId(buildingId);
+        this.checkBuildingId(buildingId);
 
         // Check the flat name in a building
         this.checkFlatName(buildingId, flat);
@@ -97,7 +97,7 @@ public class FlatServiceImpl extends ServiceImpl<FlatMapper, Flat>
         flatQueryWrapper.clear();
         flatQueryWrapper.eq(Flat::getFlatId, flatId);
         var result = flatMapper.delete(flatQueryWrapper);
-        if (result < 0) {
+        if (result < 1) {
             throw new EstateException("Delete flat is failed!");
         }
     }
@@ -119,7 +119,7 @@ public class FlatServiceImpl extends ServiceImpl<FlatMapper, Flat>
         // Check building id.
         var oldFlat = this.selectFlatByFlatId(flatId);
         if (!Objects.isNull(flat.getBuildingId())) {
-            this.selectBuildingByBuildingId(flat.getBuildingId());
+            this.checkBuildingId(flat.getBuildingId());
         } else {
             flat.setBuildingId(oldFlat.getBuildingId());
         }
@@ -199,12 +199,12 @@ public class FlatServiceImpl extends ServiceImpl<FlatMapper, Flat>
     }
 
     /**
-     * The method for selecting building by building id.
+     * The method for checking the building id whether is existed.
      *
      * @param buildingId The building id.
      * @throws EstateException The EstateException object.
      */
-    public void selectBuildingByBuildingId(Long buildingId) throws EstateException {
+    public void checkBuildingId(Long buildingId) throws EstateException {
         var buildingQueryWrapper = new LambdaQueryWrapper<Building>();
         buildingQueryWrapper.eq(Building::getBuildingId, buildingId);
         var building = buildingMapper.selectOne(buildingQueryWrapper);

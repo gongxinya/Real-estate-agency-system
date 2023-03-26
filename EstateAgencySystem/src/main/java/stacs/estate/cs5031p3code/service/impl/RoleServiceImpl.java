@@ -79,7 +79,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         }
 
         // Get the role by role id.
-        this.selectRoleByRoleId(roleId);
+        this.checkRoleId(roleId);
 
         // If user_role connected, doesn't delete role.
         var userRoleQueryWrapper = new LambdaQueryWrapper<UserRole>();
@@ -101,7 +101,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         var roleQueryWrapper = new LambdaQueryWrapper<Role>();
         roleQueryWrapper.eq(Role::getRoleId, roleId);
         var result = roleMapper.delete(roleQueryWrapper);
-        if (result < 0) {
+        if (result < 1) {
             throw new EstateException("Delete role is failed!");
         }
     }
@@ -168,12 +168,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     /**
-     * The method for selecting role by id.
+     * The method for checking role id whether is existed.
      *
      * @param roleId The role id.
      * @throws EstateException The EstateException object.
      */
-    public void selectRoleByRoleId(Long roleId) throws EstateException {
+    public void checkRoleId(Long roleId) throws EstateException {
         var roleQueryWrapper = new LambdaQueryWrapper<Role>();
         roleQueryWrapper.eq(Role::getRoleId, roleId);
         var role = roleMapper.selectOne(roleQueryWrapper);

@@ -44,7 +44,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
     private RoleMapper roleMapper;
 
     /**
-     * The method for create a role to user.
+     * The method for creating a role to user.
      *
      * @param userId The user id.
      * @param roleId The role id.
@@ -74,7 +74,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
     }
 
     /**
-     * The method for remove a role to user.
+     * The method for removing a role to user.
      *
      * @param userId The user id.
      * @param roleId The role id.

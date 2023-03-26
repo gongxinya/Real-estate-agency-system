@@ -170,7 +170,7 @@ public class UserRoleServiceTest {
         actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
 
-        // 4. Get role list successful
+        // 3. Get role list successful
         assertDoesNotThrow(() -> {
             userRoleService.listRolesByUserId(1L);
         });

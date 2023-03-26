@@ -16,7 +16,7 @@ import java.util.List;
 public interface UserRoleService extends IService<UserRole> {
 
     /**
-     * The method for create a role to user.
+     * The method for creating a role to user.
      *
      * @param userId The user id.
      * @param roleId The role id.
@@ -25,7 +25,7 @@ public interface UserRoleService extends IService<UserRole> {
     void createRoleToUser(Long userId, Long roleId) throws EstateException;
 
     /**
-     * The method for remove a role to user.
+     * The method for removing a role to user.
      *
      * @param userId The user id.
      * @param roleId The role id.

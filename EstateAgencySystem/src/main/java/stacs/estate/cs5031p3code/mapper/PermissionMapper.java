@@ -16,6 +16,22 @@ import java.util.List;
 public interface PermissionMapper extends BaseMapper<Permission> {
 
     /**
+     * The method for getting all permissions for role id.
+     *
+     * @param roleId The role id.
+     * @return Return the permission list.
+     */
+    List<Permission> selectPermissionsByRoleId(Long roleId);
+
+    /**
+     * The method for getting all permissions for user id.
+     *
+     * @param userId The user id.
+     * @return Return the permission list.
+     */
+    List<Permission> selectPermissionsByUserId(Long userId);
+
+    /**
      * The method for querying all permission keys by user id.
      *
      * @param userId The user id.

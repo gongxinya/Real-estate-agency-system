@@ -14,4 +14,11 @@
         role_id
         ,role_name,role_key
     </sql>
+    <select id="selectRolesByUserId" resultType="stacs.estate.cs5031p3code.model.po.Role"
+            parameterType="java.lang.Long">
+        SELECT DISTINCT r.*
+        FROM user_role ur
+                 LEFT JOIN `role` r ON ur.`role_id` = r.`role_id`
+        WHERE user_id = #{userId}
+    </select>
 </mapper>

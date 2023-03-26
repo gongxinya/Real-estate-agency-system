@@ -76,7 +76,7 @@ public class BuildingServiceImpl extends ServiceImpl<BuildingMapper, Building>
         }
 
         // Get the building by building id.
-        this.selectBuildingByBuildingId(buildingId);
+        this.checkBuildingId(buildingId);
 
         // If building has flat, doesn't delete building.
         var flatQueryWrapper = new LambdaQueryWrapper<Flat>();
@@ -90,7 +90,7 @@ public class BuildingServiceImpl extends ServiceImpl<BuildingMapper, Building>
         var buildingQueryWrapper = new LambdaQueryWrapper<Building>();
         buildingQueryWrapper.eq(Building::getBuildingId, buildingId);
         var result = buildingMapper.delete(buildingQueryWrapper);
-        if (result < 0) {
+        if (result < 1) {
             throw new EstateException("Delete building is failed!");
         }
     }
@@ -157,12 +157,12 @@ public class BuildingServiceImpl extends ServiceImpl<BuildingMapper, Building>
     }
 
     /**
-     * The method for selecting building by building id.
+     * The method for checking building id whether is existed.
      *
      * @param buildingId The building id.
      * @throws EstateException The EstateException object.
      */
-    public void selectBuildingByBuildingId(Long buildingId) throws EstateException {
+    public void checkBuildingId(Long buildingId) throws EstateException {
         var buildingQueryWrapper = new LambdaQueryWrapper<Building>();
         buildingQueryWrapper.eq(Building::getBuildingId, buildingId);
         var building = buildingMapper.selectOne(buildingQueryWrapper);

@@ -13,7 +13,7 @@
     <sql id="Base_Column_List">
         permission_id,permission_name,permission_key
     </sql>
-    <select id="selectPermissionsByUserId" resultType="java.lang.String" parameterType="java.lang.Long">
+    <select id="selectPermissionKeysByUserId" resultType="java.lang.String" parameterType="java.lang.Long">
         SELECT DISTINCT p.`permission_key`
         FROM user_role ur
                  LEFT JOIN `role` r ON ur.`role_id` = r.`role_id`

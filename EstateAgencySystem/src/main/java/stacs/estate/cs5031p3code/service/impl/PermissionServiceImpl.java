@@ -8,10 +8,8 @@ import stacs.estate.cs5031p3code.exception.EstateException;
 import stacs.estate.cs5031p3code.mapper.PermissionMapper;
 import stacs.estate.cs5031p3code.mapper.RolePermissionMapper;
 import stacs.estate.cs5031p3code.model.po.Permission;
-import stacs.estate.cs5031p3code.model.po.Permission;
 import stacs.estate.cs5031p3code.model.po.RolePermission;
 import stacs.estate.cs5031p3code.service.PermissionService;
-import stacs.estate.cs5031p3code.mapper.PermissionMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -74,7 +72,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         }
 
         // Get the permission by permission id.
-        this.selectPermissionByPermissionId(permissionId);
+        this.checkPermissionId(permissionId);
 
         // If role_permission connected, doesn't delete permission.
         var rolePermissionQueryWrapper = new LambdaQueryWrapper<RolePermission>();
@@ -88,7 +86,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         var permissionQueryWrapper = new LambdaQueryWrapper<Permission>();
         permissionQueryWrapper.eq(Permission::getPermissionId, permissionId);
         var result = permissionMapper.delete(permissionQueryWrapper);
-        if (result < 0) {
+        if (result < 1) {
             throw new EstateException("Delete permission is failed!");
         }
     }
@@ -155,12 +153,12 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
     }
 
     /**
-     * The method for selecting permission by id.
+     * The method for checking permission id whether is existed.
      *
      * @param permissionId The permission id.
      * @throws EstateException The EstateException object.
      */
-    public void selectPermissionByPermissionId(Long permissionId) throws EstateException {
+    public void checkPermissionId(Long permissionId) throws EstateException {
         var permissionQueryWrapper = new LambdaQueryWrapper<Permission>();
         permissionQueryWrapper.eq(Permission::getPermissionId, permissionId);
         var permission = permissionMapper.selectOne(permissionQueryWrapper);

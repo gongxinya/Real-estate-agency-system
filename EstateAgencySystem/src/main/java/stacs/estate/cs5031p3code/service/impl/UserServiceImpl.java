@@ -154,7 +154,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                 .roleId(roleId)
                 .build();
         result = userRoleMapper.insert(userRole);
-        if (result <= 0) {
+        if (result < 1) {
             throw new EstateException("Assigning role to user is failed!");
         }
     }
@@ -187,7 +187,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         var userQueryWrapper = new LambdaQueryWrapper<User>();
         userQueryWrapper.eq(User::getUserId, userId);
         var result = userMapper.delete(userQueryWrapper);
-        if (result < 0) {
+        if (result < 1) {
             throw new EstateException("Delete user is failed!");
         }
 
@@ -195,7 +195,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         var userRoleQueryWrapper = new LambdaQueryWrapper<UserRole>();
         userRoleQueryWrapper.eq(UserRole::getUserId, userId);
         result = userRoleMapper.delete(userRoleQueryWrapper);
-        if (result < 0) {
+        if (result < 1) {
             throw new EstateException("Delete the relationship between user and role is failed!");
         }
     }

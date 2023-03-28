@@ -13,7 +13,7 @@ public class WelcomeMenu implements Menu {
             \nWELCOME
             [0] login
             [1] register
-            [q] exit""";
+            [x] exit""";
 
     public WelcomeMenu(Scanner scanner, TerminalClient client) {
         this.scanner = scanner;
@@ -22,13 +22,13 @@ public class WelcomeMenu implements Menu {
 
     @Override
     public void run() {
-        String response = null;
+        String response;
         System.out.println(DISPLAY);
         while (scanner.hasNextLine()) {
             try {
                 String input = scanner.nextLine();
                 switch (input) {
-                    case "q" -> {
+                    case "x" -> {
                         response = "[Exit] Command line interface closed.";
                         System.out.println(response);
                         scanner.close();
@@ -44,8 +44,10 @@ public class WelcomeMenu implements Menu {
                             response = "Incorrect email or password";
                             break;
                         }
+//                        String userKey = "key";
                         Menu userMenu = new MainMenu(scanner, client, userKey);
                         userMenu.run();
+                        response = null;
                     }
                     case "1" -> {
                         System.out.println("Email: ");

@@ -14,6 +14,7 @@ import org.springframework.boot.test.json.JsonContent;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import stacs.estate.cs5031p3code.model.po.User;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,10 +22,12 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 public class TerminalClientTest {
     private static MockWebServer mockWebServer;
     private TerminalClient client;
+    private String successVoidJson;
     private final BasicJsonTester jsonTester = new BasicJsonTester(this.getClass());
 
     @BeforeAll
@@ -37,6 +40,12 @@ public class TerminalClientTest {
     void initialise() {
         String root = String.format("http://localhost:%s", mockWebServer.getPort());
         client = new TerminalClient(root);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", HttpStatus.OK.value());
+        jsonObject.put("message", "");
+        jsonObject.put("data", null);
+        successVoidJson = jsonObject.toJSONString();
     }
 
     @Test
@@ -70,15 +79,10 @@ public class TerminalClientTest {
 
     @Test
     void registerTest() throws InterruptedException {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code", HttpStatus.OK.value());
-        jsonObject.put("message", "");
-        jsonObject.put("data", null);
-        String json = jsonObject.toJSONString();
         mockWebServer.enqueue(
                 new MockResponse().setResponseCode(200)
                         .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .setBody(json)
+                        .setBody(successVoidJson)
         );
 
         client.register("123", "456", "name");
@@ -95,23 +99,58 @@ public class TerminalClientTest {
 
     @Test
     void logoutTest() throws InterruptedException {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code", HttpStatus.OK.value());
-        jsonObject.put("message", "");
-        jsonObject.put("data", null);
-        String json = jsonObject.toJSONString();
         mockWebServer.enqueue(
                 new MockResponse().setResponseCode(200)
                         .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .setBody(json)
+                        .setBody(successVoidJson)
         );
 
-        client.logout("key");
+        client.logout("keyLogout");
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertEquals("GET", request.getMethod());
         assertEquals("/user/logout", request.getPath());
-        assertEquals("key", request.getHeader("user_key"));
+        assertEquals("keyLogout", request.getHeader("user_key"));
+    }
+
+    @Test
+    void viewUserTest() throws InterruptedException {
+        User user = mock(User.class);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", HttpStatus.OK.value());
+        jsonObject.put("message", "");
+        jsonObject.put("data", user);
+        String jsonString = jsonObject.toJSONString();
+
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(200)
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(jsonString)
+        );
+
+        client.viewUser("keyView");
+
+        RecordedRequest request = mockWebServer.takeRequest();
+        assertEquals("GET", request.getMethod());
+        assertEquals("/user/view", request.getPath());
+        assertEquals("keyView", request.getHeader("user_key"));
+    }
+
+    @Test
+    void updateUserTest() throws InterruptedException {
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(200)
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(successVoidJson)
+        );
+
+        client.updateUser("keyUpdate", "", "", "", "",  "");
+
+        RecordedRequest request = mockWebServer.takeRequest();
+        assertEquals("PUT", request.getMethod());
+        assertEquals("/user/update", request.getPath());
+        assertEquals("keyUpdate", request.getHeader("user_key"));
     }
 
     @AfterAll

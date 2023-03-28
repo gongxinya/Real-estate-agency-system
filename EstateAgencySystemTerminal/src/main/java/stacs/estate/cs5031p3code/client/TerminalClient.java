@@ -7,6 +7,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientException;
 
+import stacs.estate.cs5031p3code.model.po.User;
 import stacs.estate.cs5031p3code.utils.ResponseResult;
 
 import java.util.HashMap;
@@ -56,7 +57,7 @@ public class TerminalClient {
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-        ResponseResult<Map<String, String>> responseResult = JSON.parseObject(response, ResponseResult.class);
+        ResponseResult<Void> responseResult = JSON.parseObject(response, ResponseResult.class);
 
         return responseResult.getMessage();
     }
@@ -68,7 +69,54 @@ public class TerminalClient {
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-        ResponseResult<Map<String, String>> responseResult = JSON.parseObject(response, ResponseResult.class);
+        ResponseResult<Void> responseResult = JSON.parseObject(response, ResponseResult.class);
+        return responseResult.getMessage();
+    }
+
+    public String viewUser(String userKey) throws WebClientException {
+        String response = client.get()
+                .uri("/user/view")
+                .header("user_key", userKey)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
+        if (responseResult.getCode().equals(HttpStatus.OK.value())) {
+            String data = responseResult.getData().toString();
+            User user = JSON.parseObject(data, User.class);
+            return user.toString();
+        }
+        return responseResult.getMessage();
+    }
+
+    public String updateUser(String userKey, String name, String phone, String email, String address, String pwd) {
+        Map<String, String> bodyValues = new HashMap<>();
+        if (!name.equals("")) {
+            bodyValues.put("userName", name);
+        }
+        if (!phone.equals("")) {
+            bodyValues.put("userPhone", phone);
+        }
+        if (!email.equals("")) {
+            bodyValues.put("userEmail", email);
+        }
+        if (!address.equals("")) {
+            bodyValues.put("userAddress", address);
+        }
+        if (!pwd.equals("")) {
+            bodyValues.put("userPassword", pwd);
+        }
+
+        String response = client.put()
+                .uri("/user/update")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("user_key", userKey)
+                .body(BodyInserters.fromValue(bodyValues))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        ResponseResult<Void> responseResult = JSON.parseObject(response, ResponseResult.class);
         return responseResult.getMessage();
     }
 }

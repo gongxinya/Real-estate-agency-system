@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class MainMenu implements Menu {
     private final Scanner scanner;
     private final TerminalClient client;
+    private final String userKey;
     private static final String DISPLAY = """
             \nMAIN MENU
             [0] USER MENU
@@ -17,7 +18,6 @@ public class MainMenu implements Menu {
             [4] PERMISSION MENU
             [q] logout
             """;
-    private final String userKey;
 
     public MainMenu(Scanner scanner, TerminalClient client, String userKey) {
         this.scanner = scanner;
@@ -27,7 +27,7 @@ public class MainMenu implements Menu {
 
     @Override
     public void run() {
-        String response = null;
+        String response;
         System.out.println(DISPLAY);
         while (scanner.hasNextLine()) {
             try {
@@ -41,6 +41,7 @@ public class MainMenu implements Menu {
                     case "0" -> {
                         Menu userMenu = new UserMenu(scanner, client, userKey);
                         userMenu.run();
+                        response = null;
                     }
                     default -> {
                         response = "[Invalid] Unsupported command";

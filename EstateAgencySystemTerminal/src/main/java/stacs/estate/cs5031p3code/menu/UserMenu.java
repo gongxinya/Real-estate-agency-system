@@ -53,6 +53,30 @@ public class UserMenu implements Menu {
                         String address = scanner.nextLine();
                         response = client.updateUser(userKey, name, phone, email, address, password);
                     }
+                    case "2" -> {
+                        System.out.println("Please enter the id of the user to be updated: ");
+                        String userId = scanner.nextLine();
+                        System.out.println("Please enter new details below (empty string will be ignored)");
+                        System.out.println("Email: ");
+                        String email = scanner.nextLine();
+                        System.out.println("Password: ");
+                        String password = scanner.nextLine();
+                        System.out.println("Name: ");
+                        String name = scanner.nextLine();
+                        System.out.println("Phone: ");
+                        String phone = scanner.nextLine();
+                        System.out.println("Address: ");
+                        String address = scanner.nextLine();
+                        response = client.updateUserById(userKey, userId, name, phone, email, address, password);
+                    }
+                    case "3" -> {
+                        System.out.println("Please enter the id of the user to be updated: ");
+                        String userId = scanner.nextLine();
+                        response = client.deleteUserById(userKey, userId);
+                    }
+                    case "4" -> {
+                        response = client.listAllUsers(userKey);
+                    }
                     default -> {
                         response = "[Invalid] Unsupported command";
                     }

@@ -17,7 +17,9 @@ import org.springframework.http.MediaType;
 import stacs.estate.cs5031p3code.model.po.User;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -145,12 +147,66 @@ public class TerminalClientTest {
                         .setBody(successVoidJson)
         );
 
-        client.updateUser("keyUpdate", "", "", "", "",  "");
+        client.updateUser("keyUpdate", "", "", "", "", "");
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertEquals("PUT", request.getMethod());
         assertEquals("/user/update", request.getPath());
         assertEquals("keyUpdate", request.getHeader("user_key"));
+    }
+
+    @Test
+    void updateUserByIdTest() throws InterruptedException {
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(200)
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(successVoidJson)
+        );
+
+        client.updateUserById("keyUpdateId", "byId", "", "", "", "", "");
+
+        RecordedRequest request = mockWebServer.takeRequest();
+        assertEquals("PUT", request.getMethod());
+        assertEquals("/user/update/byId", request.getPath());
+        assertEquals("keyUpdateId", request.getHeader("user_key"));
+    }
+
+    @Test
+    void deleteUserByIdTest() throws InterruptedException {
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(200)
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(successVoidJson)
+        );
+
+        client.deleteUserById("keyDeleteId", "byId");
+
+        RecordedRequest request = mockWebServer.takeRequest();
+        assertEquals("DELETE", request.getMethod());
+        assertEquals("/user/delete/byId", request.getPath());
+        assertEquals("keyDeleteId", request.getHeader("user_key"));
+    }
+
+    @Test
+    void listAllUsersTest() throws InterruptedException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", HttpStatus.OK.value());
+        jsonObject.put("message", "");
+        jsonObject.put("data", new ArrayList<>());
+        String jsonString = jsonObject.toJSONString();
+
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(200)
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(jsonString)
+        );
+
+        client.listAllUsers("keyList");
+
+        RecordedRequest request = mockWebServer.takeRequest();
+        assertEquals("GET", request.getMethod());
+        assertEquals("/user/list", request.getPath());
+        assertEquals("keyList", request.getHeader("user_key"));
     }
 
     @AfterAll

@@ -36,9 +36,11 @@ public class BuildingMenu implements Menu {
                         return;
                     }
                     case "0" -> {
+                        // list all buildings
                         response = client.listAllBuildings(userKey);
                     }
                     case "1" -> {
+                        // create a building
                         System.out.println("Building Name: ");
                         String name = scanner.nextLine();
                         System.out.println("Building Address: ");
@@ -46,6 +48,7 @@ public class BuildingMenu implements Menu {
                         response = client.createBuilding(userKey, name, address);
                     }
                     case "2" -> {
+                        // update a building
                         System.out.println("Please enter the id of the building to be updated: ");
                         String buildingId = scanner.nextLine();
                         if (buildingId.equals("")) {
@@ -60,6 +63,7 @@ public class BuildingMenu implements Menu {
                         response = client.updateBuildingById(userKey, buildingId, name, address);
                     }
                     case "3" -> {
+                        // delete a building
                         System.out.println("Please enter the id of the building to be deleted: ");
                         String buildingId = scanner.nextLine();
                         if (buildingId.equals("")) {

@@ -1,0 +1,150 @@
+package stacs.estate.cs5031p3code.client;
+
+import com.alibaba.fastjson.JSONObject;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.json.BasicJsonTester;
+import org.springframework.boot.test.json.JsonContent;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+
+
+public class TerminalClientFlatTest {
+    private static MockWebServer mockWebServer;
+    private TerminalClient client;
+    private String successVoidJson;
+    private final BasicJsonTester jsonTester = new BasicJsonTester(this.getClass());
+
+    @BeforeAll
+    static void setup() throws IOException {
+        mockWebServer = new MockWebServer();
+        mockWebServer.start();
+    }
+
+    @BeforeEach
+    void initialise() {
+        String root = String.format("http://localhost:%s", mockWebServer.getPort());
+        client = new TerminalClient(root);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", HttpStatus.OK.value());
+        jsonObject.put("message", "");
+        jsonObject.put("data", null);
+        successVoidJson = jsonObject.toJSONString();
+    }
+
+    @Test
+    void createFlatByBuildingIdTest() throws InterruptedException {
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(200)
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(successVoidJson)
+        );
+
+        client.createFlatByBuildingId("key", "123", "name", "area");
+
+        RecordedRequest request = mockWebServer.takeRequest();
+        assertEquals("POST", request.getMethod());
+        assertEquals("/flat/create/123", request.getPath());
+
+        JsonContent<Object> body = jsonTester.from(request.getBody().readUtf8());
+        assertThat(body).extractingJsonPathStringValue("$.buildingId").isEqualTo("123");
+        assertThat(body).extractingJsonPathStringValue("$.flatName").isEqualTo("name");
+        assertThat(body).extractingJsonPathStringValue("$.flatArea").isEqualTo("area");
+    }
+
+    @Test
+    void deleteFlatByIdTest() throws InterruptedException {
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(200)
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(successVoidJson)
+        );
+
+        client.deleteFlatById("keyDeleteId", "flatId");
+
+        RecordedRequest request = mockWebServer.takeRequest();
+        assertEquals("DELETE", request.getMethod());
+        assertEquals("/flat/delete/flatId", request.getPath());
+        assertEquals("keyDeleteId", request.getHeader("user_key"));
+    }
+
+    @Test
+    void updateFlatByIdTest() throws InterruptedException {
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(200)
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(successVoidJson)
+        );
+
+        client.updateFlatById("key", "flatId", "", "", "", "");
+
+        RecordedRequest request = mockWebServer.takeRequest();
+        assertEquals("PUT", request.getMethod());
+        assertEquals("/flat/update/flatId", request.getPath());
+        assertEquals("key", request.getHeader("user_key"));
+    }
+
+    @Test
+    void listAllFlatsTest() throws InterruptedException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", HttpStatus.OK.value());
+        jsonObject.put("message", "");
+        jsonObject.put("data", new ArrayList<>());
+        String jsonString = jsonObject.toJSONString();
+
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(200)
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(jsonString)
+        );
+
+        client.listAllFlats("keyListFlats");
+
+        RecordedRequest request = mockWebServer.takeRequest();
+        assertEquals("GET", request.getMethod());
+        assertEquals("/flat/list", request.getPath());
+        assertEquals("keyListFlats", request.getHeader("user_key"));
+    }
+
+    @Test
+    void listAllFlatsByBuildingIdTest() throws InterruptedException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", HttpStatus.OK.value());
+        jsonObject.put("message", "");
+        jsonObject.put("data", new ArrayList<>());
+        String jsonString = jsonObject.toJSONString();
+
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(200)
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(jsonString)
+        );
+
+        client.listAllFlatsByBuildingId("keyListFlats", "buildingId");
+
+        RecordedRequest request = mockWebServer.takeRequest();
+        assertEquals("GET", request.getMethod());
+        assertEquals("/flat/list/buildingId", request.getPath());
+        assertEquals("keyListFlats", request.getHeader("user_key"));
+    }
+
+    @AfterAll
+    static void tearDown() throws IOException {
+        mockWebServer.shutdown();
+    }
+
+}

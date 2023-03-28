@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientException;
 
 import stacs.estate.cs5031p3code.model.po.Building;
+import stacs.estate.cs5031p3code.model.po.Flat;
 import stacs.estate.cs5031p3code.model.po.User;
 import stacs.estate.cs5031p3code.utils.ResponseResult;
 
@@ -263,6 +264,112 @@ public class TerminalClient {
                 .block();
 
         ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
+        return responseResult.getMessage();
+    }
+
+    public String createFlatByBuildingId(String userKey, String buildingId, String flatName, String flatArea) throws WebClientException {
+        Map<String, String> bodyValues = new HashMap<>();
+        bodyValues.put("buildingId", buildingId);
+        bodyValues.put("flatName", flatName);
+        bodyValues.put("flatArea", flatArea);
+
+        String response = client.post()
+                .uri("/flat/create/" + buildingId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("user_key", userKey)
+                .body(BodyInserters.fromValue(bodyValues))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
+        return responseResult.getMessage();
+    }
+
+    public String deleteFlatById(String userKey, String flatId) throws WebClientException {
+        String response = client.delete()
+                .uri("/flat/delete/" + flatId)
+                .header("user_key", userKey)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
+        return responseResult.getMessage();
+    }
+
+    public String updateFlatById(String userKey, String flatId,
+                                 String name, String area, String date, String price) throws WebClientException {
+        Map<String, String> bodyValues = new HashMap<>();
+        if (!name.equals("")) {
+            bodyValues.put("flatName", name);
+        }
+        if (!area.equals("")) {
+            bodyValues.put("flatArea", area);
+        }
+        if (!date.equals("")) {
+            bodyValues.put("flatSoldOutDate", date);
+        }
+        if (!price.equals("")) {
+            bodyValues.put("flatPrice", price);
+        }
+
+        String response = client.put()
+                .uri("/flat/update/" + flatId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("user_key", userKey)
+                .body(BodyInserters.fromValue(bodyValues))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
+        return responseResult.getMessage();
+    }
+
+    public String listAllFlats(String userKey) throws WebClientException {
+        String response = client.get()
+                .uri("/flat/list")
+                .header("user_key", userKey)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
+        if (responseResult.getCode().equals(HttpStatus.OK.value())) {
+            JSONArray jsonArray = (JSONArray) responseResult.getData();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+                Flat flat = JSON.parseObject(obj.toJSONString(), Flat.class);
+                sb.append(flat.toString());
+                sb.append("\n");
+            }
+            return sb.toString();
+        }
+        return responseResult.getMessage();
+    }
+
+    public String listAllFlatsByBuildingId(String userKey, String buildingId) throws WebClientException {
+        String response = client.get()
+                .uri("/flat/list/" + buildingId)
+                .header("user_key", userKey)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
+        if (responseResult.getCode().equals(HttpStatus.OK.value())) {
+            JSONArray jsonArray = (JSONArray) responseResult.getData();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+                Flat flat = JSON.parseObject(obj.toJSONString(), Flat.class);
+                sb.append(flat.toString());
+                sb.append("\n");
+            }
+            return sb.toString();
+        }
         return responseResult.getMessage();
     }
 

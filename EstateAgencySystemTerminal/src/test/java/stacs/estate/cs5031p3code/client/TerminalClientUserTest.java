@@ -19,14 +19,13 @@ import stacs.estate.cs5031p3code.model.po.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-public class TerminalClientTest {
+public class TerminalClientUserTest {
     private static MockWebServer mockWebServer;
     private TerminalClient client;
     private String successVoidJson;

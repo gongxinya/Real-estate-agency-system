@@ -56,6 +56,10 @@ public class UserMenu implements Menu {
                     case "2" -> {
                         System.out.println("Please enter the id of the user to be updated: ");
                         String userId = scanner.nextLine();
+                        if (userId.equals("")) {
+                            response = "ID cannot be empty!";
+                            break;
+                        }
                         System.out.println("Please enter new details below (empty string will be ignored)");
                         System.out.println("Email: ");
                         String email = scanner.nextLine();
@@ -72,6 +76,10 @@ public class UserMenu implements Menu {
                     case "3" -> {
                         System.out.println("Please enter the id of the user to be deleted: ");
                         String userId = scanner.nextLine();
+                        if (userId.equals("")) {
+                            response = "ID cannot be empty!";
+                            break;
+                        }
                         response = client.deleteUserById(userKey, userId);
                     }
                     case "4" -> {
@@ -91,4 +99,3 @@ public class UserMenu implements Menu {
         }
     }
 }
-

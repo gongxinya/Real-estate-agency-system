@@ -9,11 +9,11 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientException;
 
+import stacs.estate.cs5031p3code.model.po.Building;
 import stacs.estate.cs5031p3code.model.po.User;
 import stacs.estate.cs5031p3code.utils.ResponseResult;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -188,4 +188,82 @@ public class TerminalClient {
         }
         return responseResult.getMessage();
     }
+
+    public String listAllBuildings(String userKey) throws WebClientException {
+        String response = client.get()
+                .uri("/building/list")
+                .header("user_key", userKey)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
+        if (responseResult.getCode().equals(HttpStatus.OK.value())) {
+            JSONArray jsonArray = (JSONArray) responseResult.getData();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+                Building building = JSON.parseObject(obj.toJSONString(), Building.class);
+                sb.append(building.toString());
+                sb.append("\n");
+            }
+            return sb.toString();
+        }
+        return responseResult.getMessage();
+    }
+
+    public String createBuilding(String userKey, String name, String address) throws WebClientException {
+        Map<String, String> bodyValues = new HashMap<>();
+        bodyValues.put("buildingName", name);
+        bodyValues.put("buildingAddress", address);
+
+        String response = client.post()
+                .uri("/building/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("user_key", userKey)
+                .body(BodyInserters.fromValue(bodyValues))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
+        return responseResult.getMessage();
+    }
+
+    public String updateBuildingById(String userKey, String buildingId, String name, String address)
+            throws WebClientException {
+        Map<String, String> bodyValues = new HashMap<>();
+        if (!name.equals("")) {
+            bodyValues.put("buildingName", name);
+        }
+        if (!address.equals("")) {
+            bodyValues.put("buildingAddress", address);
+        }
+
+        String response = client.put()
+                .uri("/building/update/" + buildingId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("user_key", userKey)
+                .body(BodyInserters.fromValue(bodyValues))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
+        return responseResult.getMessage();
+    }
+
+    public String deleteBuildingById(String userKey, String buildingId) throws WebClientException {
+        String response = client.delete()
+                .uri("/building/delete/" + buildingId)
+                .header("user_key", userKey)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
+        return responseResult.getMessage();
+    }
+
 }

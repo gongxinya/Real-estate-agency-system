@@ -43,6 +43,11 @@ public class MainMenu implements Menu {
                         userMenu.run();
                         response = null;
                     }
+                    case "1" -> {
+                        Menu buildingMenu = new BuildingMenu(scanner, client, userKey);
+                        buildingMenu.run();
+                        response = null;
+                    }
                     default -> {
                         response = "[Invalid] Unsupported command";
                     }

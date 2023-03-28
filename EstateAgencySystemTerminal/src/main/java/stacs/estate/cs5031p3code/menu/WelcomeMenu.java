@@ -44,7 +44,6 @@ public class WelcomeMenu implements Menu {
                             response = "Incorrect email or password";
                             break;
                         }
-//                        String userKey = "key";
                         Menu userMenu = new MainMenu(scanner, client, userKey);
                         userMenu.run();
                         response = null;

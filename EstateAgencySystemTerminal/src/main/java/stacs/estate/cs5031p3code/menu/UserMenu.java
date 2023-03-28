@@ -70,7 +70,7 @@ public class UserMenu implements Menu {
                         response = client.updateUserById(userKey, userId, name, phone, email, address, password);
                     }
                     case "3" -> {
-                        System.out.println("Please enter the id of the user to be updated: ");
+                        System.out.println("Please enter the id of the user to be deleted: ");
                         String userId = scanner.nextLine();
                         response = client.deleteUserById(userKey, userId);
                     }
@@ -91,3 +91,4 @@ public class UserMenu implements Menu {
         }
     }
 }
+

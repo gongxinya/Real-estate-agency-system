@@ -6,6 +6,11 @@ import stacs.estate.cs5031p3code.menu.WelcomeMenu;
 
 import java.util.Scanner;
 
+/**
+ * The entry point of the terminal client.
+ *
+ * @author 190005675
+ */
 public class TerminalClientMain {
     private static final String root = "http://localhost:8080";
 
@@ -16,5 +21,7 @@ public class TerminalClientMain {
 
         Menu welcomeMenu = new WelcomeMenu(scanner, client);
         welcomeMenu.run();
+        scanner.close();
+        System.exit(0);
     }
 }

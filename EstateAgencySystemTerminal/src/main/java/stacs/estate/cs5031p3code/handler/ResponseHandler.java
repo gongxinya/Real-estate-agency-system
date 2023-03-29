@@ -5,7 +5,15 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A class which only contains static methods to interpret response from the server.
+ *
+ * @author 190005675
+ */
 public class ResponseHandler {
+    /**
+     * Parse the response as the message it contains as no data is expected.
+     */
     public static String parseVoid(Map<?, ?> response) {
         // No data, the only important thing is the message
         if (response != null) {
@@ -14,6 +22,9 @@ public class ResponseHandler {
         return null;
     }
 
+    /**
+     * Parse the response as the user key (JSON web token) if the HTTP status code is ok.
+     */
     public static String parseUserKey(Map<?, ?> response) {
         if (response != null) {
             Integer code = (Integer) response.get("code");
@@ -25,6 +36,9 @@ public class ResponseHandler {
         return null;
     }
 
+    /**
+     * Parse the response as a user if the HTTP status code is ok.
+     */
     public static String parseUser(Map<?, ?> response) {
         if (response != null) {
             Integer code = (Integer) response.get("code");
@@ -44,6 +58,9 @@ public class ResponseHandler {
         return null;
     }
 
+    /**
+     * Parse the response as a list of users if the HTTP status code is ok.
+     */
     public static String parseListUser(Map<?, ?> response) {
         if (response != null) {
             Integer code = (Integer) response.get("code");
@@ -70,6 +87,9 @@ public class ResponseHandler {
         return null;
     }
 
+    /**
+     * Parse the response as a list of buildings if the HTTP status code is ok.
+     */
     public static String parseListBuilding(Map<?, ?> response) {
         if (response != null) {
             Integer code = (Integer) response.get("code");
@@ -94,6 +114,9 @@ public class ResponseHandler {
         return null;
     }
 
+    /**
+     * Parse the response as a list of flats if the HTTP status code is ok.
+     */
     public static String parseListFlat(Map<?, ?> response) {
         if (response != null) {
             Integer code = (Integer) response.get("code");
@@ -123,6 +146,9 @@ public class ResponseHandler {
         return null;
     }
 
+    /**
+     * Parse the response as a list of roles if the HTTP status code is ok.
+     */
     public static String parseListRole(Map<?, ?> response) {
         if (response != null) {
             Integer code = (Integer) response.get("code");

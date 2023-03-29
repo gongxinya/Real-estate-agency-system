@@ -5,6 +5,12 @@ import stacs.estate.cs5031p3code.client.TerminalClient;
 
 import java.util.Scanner;
 
+/**
+ * An implementation of the {@link Menu}.
+ * This is the role menu which allows admins to control roles of users.
+ *
+ * @author 190005675
+ */
 public class RoleMenu implements Menu {
     private final Scanner scanner;
     private final TerminalClient client;

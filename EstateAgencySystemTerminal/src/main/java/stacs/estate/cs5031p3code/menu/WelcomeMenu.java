@@ -6,6 +6,12 @@ import stacs.estate.cs5031p3code.client.TerminalClient;
 
 import java.util.Scanner;
 
+/**
+ * An implementation of the {@link Menu}.
+ * This is the welcome page of the system where user can log in, register and exit.
+ *
+ * @author 190005675
+ */
 public class WelcomeMenu implements Menu {
     private final Scanner scanner;
     private final TerminalClient client;
@@ -31,7 +37,6 @@ public class WelcomeMenu implements Menu {
                     case "x" -> {
                         response = "[Exit] Command line interface closed.";
                         System.out.println(response);
-                        scanner.close();
                         return;
                     }
                     case "0" -> {
@@ -44,7 +49,6 @@ public class WelcomeMenu implements Menu {
                             response = "Incorrect email or password";
                             break;
                         }
-//                        String userKey = "key";
                         Menu userMenu = new MainMenu(scanner, client, userKey);
                         userMenu.run();
                         response = null;
@@ -70,6 +74,6 @@ public class WelcomeMenu implements Menu {
             }
             System.out.println(DISPLAY);
         }
-        scanner.close();
     }
 }
+

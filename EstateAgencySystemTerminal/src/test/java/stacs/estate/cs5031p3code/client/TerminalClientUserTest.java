@@ -1,10 +1,10 @@
 package stacs.estate.cs5031p3code.client;
 
-import com.alibaba.fastjson.JSONObject;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,19 +14,16 @@ import org.springframework.boot.test.json.JsonContent;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import stacs.estate.cs5031p3code.model.po.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 
-public class TerminalClientTest {
+public class TerminalClientUserTest {
     private static MockWebServer mockWebServer;
     private TerminalClient client;
     private String successVoidJson;
@@ -43,23 +40,23 @@ public class TerminalClientTest {
         String root = String.format("http://localhost:%s", mockWebServer.getPort());
         client = new TerminalClient(root);
 
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code", HttpStatus.OK.value());
-        jsonObject.put("message", "");
-        jsonObject.put("data", null);
-        successVoidJson = jsonObject.toJSONString();
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", HttpStatus.OK.value());
+        map.put("message", "");
+        map.put("data", null);
+        successVoidJson = new JSONObject(map).toString();
     }
 
     @Test
     void loginTest() throws InterruptedException {
         // prepare json string
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code", HttpStatus.OK.value());
-        jsonObject.put("message", "");
-        Map<String, String> map = new HashMap<>();
-        map.put("user_key", "key");
-        jsonObject.put("data", map);
-        String jsonString = jsonObject.toJSONString();
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", HttpStatus.OK.value());
+        map.put("message", "");
+        Map<String, String> data = new HashMap<>();
+        data.put("user_key", "key");
+        map.put("data", data);
+        String jsonString = new JSONObject(map).toString();
 
         // mock server
         mockWebServer.enqueue(
@@ -117,13 +114,11 @@ public class TerminalClientTest {
 
     @Test
     void viewUserTest() throws InterruptedException {
-        User user = mock(User.class);
-
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code", HttpStatus.OK.value());
-        jsonObject.put("message", "");
-        jsonObject.put("data", user);
-        String jsonString = jsonObject.toJSONString();
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", HttpStatus.OK.value());
+        map.put("message", "");
+        map.put("data", new HashMap<>());
+        String jsonString = new JSONObject(map).toString();
 
         mockWebServer.enqueue(
                 new MockResponse().setResponseCode(200)
@@ -189,11 +184,11 @@ public class TerminalClientTest {
 
     @Test
     void listAllUsersTest() throws InterruptedException {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code", HttpStatus.OK.value());
-        jsonObject.put("message", "");
-        jsonObject.put("data", new ArrayList<>());
-        String jsonString = jsonObject.toJSONString();
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", HttpStatus.OK.value());
+        map.put("message", "");
+        map.put("data", new ArrayList<>());
+        String jsonString = new JSONObject(map).toString();
 
         mockWebServer.enqueue(
                 new MockResponse().setResponseCode(200)

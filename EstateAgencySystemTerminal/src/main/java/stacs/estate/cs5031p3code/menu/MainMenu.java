@@ -5,6 +5,12 @@ import stacs.estate.cs5031p3code.client.TerminalClient;
 
 import java.util.Scanner;
 
+/**
+ * An implementation of the {@link Menu}.
+ * This is the main menu of the system.
+ *
+ * @author 190005675
+ */
 public class MainMenu implements Menu {
     private final Scanner scanner;
     private final TerminalClient client;
@@ -15,7 +21,6 @@ public class MainMenu implements Menu {
             [1] BUILDING MENU
             [2] FLAT MENU
             [3] ROLE MENU
-            [4] PERMISSION MENU
             [q] logout
             """;
 
@@ -41,6 +46,21 @@ public class MainMenu implements Menu {
                     case "0" -> {
                         Menu userMenu = new UserMenu(scanner, client, userKey);
                         userMenu.run();
+                        response = null;
+                    }
+                    case "1" -> {
+                        Menu buildingMenu = new BuildingMenu(scanner, client, userKey);
+                        buildingMenu.run();
+                        response = null;
+                    }
+                    case "2" -> {
+                        Menu flatMenu = new FlatMenu(scanner, client, userKey);
+                        flatMenu.run();
+                        response = null;
+                    }
+                    case "3" -> {
+                        Menu roleMenu = new RoleMenu(scanner, client, userKey);
+                        roleMenu.run();
                         response = null;
                     }
                     default -> {

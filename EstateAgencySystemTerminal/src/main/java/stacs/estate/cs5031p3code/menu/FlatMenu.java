@@ -84,7 +84,7 @@ public class FlatMenu implements Menu {
                         String name = scanner.nextLine();
                         System.out.println("Flat Area: ");
                         String area = scanner.nextLine();
-                        System.out.println("Flat Sold Out Date: ");
+                        System.out.println("Flat Sold Date: ");
                         String date = scanner.nextLine();
                         System.out.println("Flat Price: ");
                         String price = scanner.nextLine();
@@ -92,7 +92,7 @@ public class FlatMenu implements Menu {
                     }
                     case "4" -> {
                         // delete a flat
-                        System.out.println("Please enter the ID of the flat to be updated: ");
+                        System.out.println("Please enter the ID of the flat to be deleted: ");
                         String flatId = scanner.nextLine();
                         if (flatId.equals("")) {
                             response = "ID cannot be empty!";

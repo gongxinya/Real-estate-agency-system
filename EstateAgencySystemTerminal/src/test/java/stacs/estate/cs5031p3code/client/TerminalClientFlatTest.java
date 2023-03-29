@@ -92,13 +92,27 @@ public class TerminalClientFlatTest {
                         .setBody(successVoidJson)
         );
 
-        client.updateFlatById("key", "flatId", "", "", "", "");
+        client.updateFlatById("key", "flatId", "name", "", "", "");
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertEquals("PUT", request.getMethod());
         assertEquals("/flat/update/flatId", request.getPath());
         assertEquals("key", request.getHeader("user_key"));
     }
+
+    @Test
+    void updateFlatByIdEmptyTest() {
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(200)
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(successVoidJson)
+        );
+
+        String response = client.updateFlatById("key", "flatId", "", "", "", "");
+
+        assertEquals("Nothing to update!", response);
+    }
+
 
     @Test
     void listAllFlatsTest() throws InterruptedException {

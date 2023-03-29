@@ -146,6 +146,9 @@ public class TerminalClient {
         if (!pwd.equals("")) {
             bodyValues.put("userPassword", pwd);
         }
+        if (bodyValues.isEmpty()) {
+            return "Nothing to update!";
+        }
 
         Map<?, ?> response = client.put()
                 .uri("/user/update")
@@ -189,6 +192,9 @@ public class TerminalClient {
         }
         if (!pwd.equals("")) {
             bodyValues.put("userPassword", pwd);
+        }
+        if (bodyValues.isEmpty()) {
+            return "Nothing to update!";
         }
 
         Map<?, ?> response = client.put()
@@ -300,6 +306,9 @@ public class TerminalClient {
         if (!address.equals("")) {
             bodyValues.put("buildingAddress", address);
         }
+        if (bodyValues.isEmpty()) {
+            return "Nothing to update!";
+        }
 
         Map<?, ?> response = client.put()
                 .uri("/building/update/" + buildingId)
@@ -403,6 +412,9 @@ public class TerminalClient {
         }
         if (!price.equals("")) {
             bodyValues.put("flatPrice", price);
+        }
+        if (bodyValues.isEmpty()) {
+            return "Nothing to update!";
         }
 
         Map<?, ?> response = client.put()

@@ -142,12 +142,24 @@ public class TerminalClientUserTest {
                         .setBody(successVoidJson)
         );
 
-        client.updateUser("keyUpdate", "", "", "", "", "");
+        client.updateUser("keyUpdate", "name", "", "", "", "");
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertEquals("PUT", request.getMethod());
         assertEquals("/user/update", request.getPath());
         assertEquals("keyUpdate", request.getHeader("user_key"));
+    }
+
+    @Test
+    void updateUserEmptyTest() {
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(200)
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(successVoidJson)
+        );
+
+        String response = client.updateUser("keyUpdate", "", "", "", "", "");
+        assertEquals("Nothing to update!", response);
     }
 
     @Test
@@ -158,12 +170,24 @@ public class TerminalClientUserTest {
                         .setBody(successVoidJson)
         );
 
-        client.updateUserById("keyUpdateId", "byId", "", "", "", "", "");
+        client.updateUserById("keyUpdateId", "byId", "name", "", "", "", "");
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertEquals("PUT", request.getMethod());
         assertEquals("/user/update/byId", request.getPath());
         assertEquals("keyUpdateId", request.getHeader("user_key"));
+    }
+
+    @Test
+    void updateUserByIdEmptyTest() {
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(200)
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(successVoidJson)
+        );
+
+        String response = client.updateUserById("keyUpdate", "byId", "", "", "", "", "");
+        assertEquals("Nothing to update!", response);
     }
 
     @Test

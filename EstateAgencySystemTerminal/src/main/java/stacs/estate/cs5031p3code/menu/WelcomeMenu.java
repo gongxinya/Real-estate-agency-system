@@ -76,4 +76,3 @@ public class WelcomeMenu implements Menu {
         }
     }
 }
-

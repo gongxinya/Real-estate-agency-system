@@ -96,12 +96,24 @@ public class TerminalClientBuildingTest {
                         .setBody(successVoidJson)
         );
 
-        client.updateBuildingById("keyUpdateBuildingId", "byId", "", "");
+        client.updateBuildingById("keyUpdateBuildingId", "byId", "name", "");
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertEquals("PUT", request.getMethod());
         assertEquals("/building/update/byId", request.getPath());
         assertEquals("keyUpdateBuildingId", request.getHeader("user_key"));
+    }
+
+    @Test
+    void updateBuildingByIdEmptyTest() {
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(200)
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(successVoidJson)
+        );
+
+        String response = client.updateBuildingById("key", "id2", "", "");
+        assertEquals("Nothing to update!", response);
     }
 
     @Test

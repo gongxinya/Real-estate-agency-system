@@ -1,10 +1,10 @@
 package stacs.estate.cs5031p3code.client;
 
-import com.alibaba.fastjson.JSONObject;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +17,8 @@ import org.springframework.http.MediaType;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,20 +40,20 @@ public class TerminalClientBuildingTest {
         String root = String.format("http://localhost:%s", mockWebServer.getPort());
         client = new TerminalClient(root);
 
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code", HttpStatus.OK.value());
-        jsonObject.put("message", "");
-        jsonObject.put("data", null);
-        successVoidJson = jsonObject.toJSONString();
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", HttpStatus.OK.value());
+        map.put("message", "");
+        map.put("data", null);
+        successVoidJson = new JSONObject(map).toString();
     }
 
     @Test
     void listAllBuildingsTest() throws InterruptedException {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code", HttpStatus.OK.value());
-        jsonObject.put("message", "");
-        jsonObject.put("data", new ArrayList<>());
-        String jsonString = jsonObject.toJSONString();
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", HttpStatus.OK.value());
+        map.put("message", "");
+        map.put("data", new ArrayList<>());
+        String jsonString = new JSONObject(map).toString();
 
         mockWebServer.enqueue(
                 new MockResponse().setResponseCode(200)

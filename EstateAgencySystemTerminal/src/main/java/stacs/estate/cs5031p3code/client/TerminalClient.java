@@ -1,18 +1,11 @@
 package stacs.estate.cs5031p3code.client;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientException;
 
-import stacs.estate.cs5031p3code.model.po.Building;
-import stacs.estate.cs5031p3code.model.po.Flat;
-import stacs.estate.cs5031p3code.model.po.User;
-import stacs.estate.cs5031p3code.utils.ResponseResult;
+import stacs.estate.cs5031p3code.handler.ResponseHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,21 +23,15 @@ public class TerminalClient {
         bodyValues.put("userEmail", email);
         bodyValues.put("userPassword", password);
 
-        String response = client.post()
+        Map<?, ?> response = client.post()
                 .uri("/user/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(bodyValues))
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Map.class)
                 .block();
-        ResponseResult<Map<String, String>> responseResult = JSON.parseObject(response, ResponseResult.class);
-
-        if (responseResult.getCode().equals(HttpStatus.OK.value())) {
-            // login successful
-            return responseResult.getData().get("user_key");
-        }
-        return null;
+        return ResponseHandler.parseUserKey(response);
     }
 
     public String register(String email, String password, String name) throws WebClientException {
@@ -53,44 +40,35 @@ public class TerminalClient {
         bodyValues.put("userPassword", password);
         bodyValues.put("userName", name);
 
-        String response = client.post()
+        Map<?, ?> response = client.post()
                 .uri("/user/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(bodyValues))
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Map.class)
                 .block();
-        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
-
-        return responseResult.getMessage();
+        return ResponseHandler.parseVoid(response);
     }
 
     public String logout(String userKey) throws WebClientException {
-        String response = client.get()
+        Map<?, ?> response = client.get()
                 .uri("/user/logout")
                 .header("user_key", userKey)
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Map.class)
                 .block();
-        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
-        return responseResult.getMessage();
+        return ResponseHandler.parseVoid(response);
     }
 
     public String viewUser(String userKey) throws WebClientException {
-        String response = client.get()
+        Map<?, ?> response = client.get()
                 .uri("/user/view")
                 .header("user_key", userKey)
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Map.class)
                 .block();
-        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
-        if (responseResult.getCode().equals(HttpStatus.OK.value())) {
-            String data = responseResult.getData().toString();
-            User user = JSON.parseObject(data, User.class);
-            return user.toString();
-        }
-        return responseResult.getMessage();
+        return ResponseHandler.parseUser(response);
     }
 
     public String updateUser(String userKey, String name, String phone,
@@ -112,17 +90,16 @@ public class TerminalClient {
             bodyValues.put("userPassword", pwd);
         }
 
-        String response = client.put()
+        Map<?, ?> response = client.put()
                 .uri("/user/update")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("user_key", userKey)
                 .body(BodyInserters.fromValue(bodyValues))
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Map.class)
                 .block();
-        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
-        return responseResult.getMessage();
+        return ResponseHandler.parseVoid(response);
     }
 
     public String updateUserById(String userKey, String userId, String name, String phone,
@@ -144,72 +121,46 @@ public class TerminalClient {
             bodyValues.put("userPassword", pwd);
         }
 
-        String response = client.put()
+        Map<?, ?> response = client.put()
                 .uri("/user/update/" + userId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("user_key", userKey)
                 .body(BodyInserters.fromValue(bodyValues))
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Map.class)
                 .block();
-        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
-        return responseResult.getMessage();
+        return ResponseHandler.parseVoid(response);
     }
 
     public String deleteUserById(String userKey, String userId) throws WebClientException {
-        String response = client.delete()
+        Map<?, ?> response = client.delete()
                 .uri("/user/delete/" + userId)
                 .header("user_key", userKey)
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Map.class)
                 .block();
-        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
-        return responseResult.getMessage();
+        return ResponseHandler.parseVoid(response);
     }
 
     public String listAllUsers(String userKey) throws WebClientException {
-        String response = client.get()
+        Map<?, ?> response = client.get()
                 .uri("/user/list")
                 .header("user_key", userKey)
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Map.class)
                 .block();
-        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
-        if (responseResult.getCode().equals(HttpStatus.OK.value())) {
-            JSONArray jsonArray = (JSONArray) responseResult.getData();
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < jsonArray.size(); i++) {
-                JSONObject obj = jsonArray.getJSONObject(i);
-                User user = JSON.parseObject(obj.toJSONString(), User.class);
-                sb.append(user.toString());
-                sb.append("\n");
-            }
-            return sb.toString();
-        }
-        return responseResult.getMessage();
+        return ResponseHandler.parseListUser(response);
     }
 
     public String listAllBuildings(String userKey) throws WebClientException {
-        String response = client.get()
+        Map<?, ?> response = client.get()
                 .uri("/building/list")
                 .header("user_key", userKey)
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Map.class)
                 .block();
-        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
-        if (responseResult.getCode().equals(HttpStatus.OK.value())) {
-            JSONArray jsonArray = (JSONArray) responseResult.getData();
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < jsonArray.size(); i++) {
-                JSONObject obj = jsonArray.getJSONObject(i);
-                Building building = JSON.parseObject(obj.toJSONString(), Building.class);
-                sb.append(building.toString());
-                sb.append("\n");
-            }
-            return sb.toString();
-        }
-        return responseResult.getMessage();
+        return ResponseHandler.parseListBuilding(response);
     }
 
     public String createBuilding(String userKey, String name, String address) throws WebClientException {
@@ -217,18 +168,16 @@ public class TerminalClient {
         bodyValues.put("buildingName", name);
         bodyValues.put("buildingAddress", address);
 
-        String response = client.post()
+        Map<?, ?> response = client.post()
                 .uri("/building/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("user_key", userKey)
                 .body(BodyInserters.fromValue(bodyValues))
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Map.class)
                 .block();
-
-        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
-        return responseResult.getMessage();
+        return ResponseHandler.parseVoid(response);
     }
 
     public String updateBuildingById(String userKey, String buildingId, String name, String address)
@@ -241,30 +190,26 @@ public class TerminalClient {
             bodyValues.put("buildingAddress", address);
         }
 
-        String response = client.put()
+        Map<?, ?> response = client.put()
                 .uri("/building/update/" + buildingId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("user_key", userKey)
                 .body(BodyInserters.fromValue(bodyValues))
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Map.class)
                 .block();
-
-        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
-        return responseResult.getMessage();
+        return ResponseHandler.parseVoid(response);
     }
 
     public String deleteBuildingById(String userKey, String buildingId) throws WebClientException {
-        String response = client.delete()
+        Map<?, ?> response = client.delete()
                 .uri("/building/delete/" + buildingId)
                 .header("user_key", userKey)
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Map.class)
                 .block();
-
-        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
-        return responseResult.getMessage();
+        return ResponseHandler.parseVoid(response);
     }
 
     public String createFlatByBuildingId(String userKey, String buildingId, String flatName, String flatArea) throws WebClientException {
@@ -273,30 +218,26 @@ public class TerminalClient {
         bodyValues.put("flatName", flatName);
         bodyValues.put("flatArea", flatArea);
 
-        String response = client.post()
+        Map<?, ?> response = client.post()
                 .uri("/flat/create/" + buildingId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("user_key", userKey)
                 .body(BodyInserters.fromValue(bodyValues))
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Map.class)
                 .block();
-
-        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
-        return responseResult.getMessage();
+        return ResponseHandler.parseVoid(response);
     }
 
     public String deleteFlatById(String userKey, String flatId) throws WebClientException {
-        String response = client.delete()
+        Map<?, ?> response = client.delete()
                 .uri("/flat/delete/" + flatId)
                 .header("user_key", userKey)
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Map.class)
                 .block();
-
-        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
-        return responseResult.getMessage();
+        return ResponseHandler.parseVoid(response);
     }
 
     public String updateFlatById(String userKey, String flatId,
@@ -315,62 +256,35 @@ public class TerminalClient {
             bodyValues.put("flatPrice", price);
         }
 
-        String response = client.put()
+        Map<?, ?> response = client.put()
                 .uri("/flat/update/" + flatId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("user_key", userKey)
                 .body(BodyInserters.fromValue(bodyValues))
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Map.class)
                 .block();
-
-        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
-        return responseResult.getMessage();
+        return ResponseHandler.parseVoid(response);
     }
 
     public String listAllFlats(String userKey) throws WebClientException {
-        String response = client.get()
+        Map<?, ?> response = client.get()
                 .uri("/flat/list")
                 .header("user_key", userKey)
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Map.class)
                 .block();
-        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
-        if (responseResult.getCode().equals(HttpStatus.OK.value())) {
-            JSONArray jsonArray = (JSONArray) responseResult.getData();
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < jsonArray.size(); i++) {
-                JSONObject obj = jsonArray.getJSONObject(i);
-                Flat flat = JSON.parseObject(obj.toJSONString(), Flat.class);
-                sb.append(flat.toString());
-                sb.append("\n");
-            }
-            return sb.toString();
-        }
-        return responseResult.getMessage();
+        return ResponseHandler.parseListFlat(response);
     }
 
     public String listAllFlatsByBuildingId(String userKey, String buildingId) throws WebClientException {
-        String response = client.get()
+        Map<?, ?> response = client.get()
                 .uri("/flat/list/" + buildingId)
                 .header("user_key", userKey)
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Map.class)
                 .block();
-        ResponseResult<?> responseResult = JSON.parseObject(response, ResponseResult.class);
-        if (responseResult.getCode().equals(HttpStatus.OK.value())) {
-            JSONArray jsonArray = (JSONArray) responseResult.getData();
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < jsonArray.size(); i++) {
-                JSONObject obj = jsonArray.getJSONObject(i);
-                Flat flat = JSON.parseObject(obj.toJSONString(), Flat.class);
-                sb.append(flat.toString());
-                sb.append("\n");
-            }
-            return sb.toString();
-        }
-        return responseResult.getMessage();
+        return ResponseHandler.parseListFlat(response);
     }
-
 }

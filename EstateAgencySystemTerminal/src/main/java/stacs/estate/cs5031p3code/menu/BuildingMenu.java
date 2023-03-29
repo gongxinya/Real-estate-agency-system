@@ -12,9 +12,9 @@ public class BuildingMenu implements Menu {
     private static final String DISPLAY = """
             \nBUILDING MENU
             [0] List all buildings
-            [1] [Admin] Create a building
-            [2] [Admin] Update a building by ID
-            [3] [Admin] Delete a building by ID
+            [1] [Admin/Manager] Create a building
+            [2] [Admin/Manager] Update a building by ID
+            [3] [Admin/Manager] Delete a building by ID
             [b] Back to MAIN MENU
             """;
 

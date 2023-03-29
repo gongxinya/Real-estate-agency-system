@@ -111,9 +111,33 @@ public class ResponseHandler {
                     Integer buildingId = (Integer) flat.get("buildingId");
                     Integer userId = (Integer) flat.get("userId");
                     String flatString = String.format(
-                            "FlatID: %s%nName: %s%nArea: %s%nSold date: %s%nPrice: %s%nBuildingID: %s%nUserID: %s%n",
+                            "FlatID: %s%nName: %s%nArea: %s%nSold Date: %s%nPrice: %s%nBuildingID: %s%nUserID: %s%n",
                             flatId, name, area, date, price, buildingId, userId);
                     sb.append(flatString);
+                    sb.append("\n");
+                }
+                return sb.toString();
+            }
+            return (String) response.get("message");
+        }
+        return null;
+    }
+
+    public static String parseListRole(Map<?, ?> response) {
+        if (response != null) {
+            Integer code = (Integer) response.get("code");
+            if (code.equals(HttpStatus.OK.value())) {
+                // contains data
+                List<?> data = (List<?>) response.get("data");
+                StringBuilder sb = new StringBuilder();
+                for (Object obj : data) {
+                    Map<?, ?> role = (Map<?, ?>) obj;
+                    Integer id = (Integer) role.get("roleId");
+                    String name = (String) role.get("roleName");
+                    String key = (String) role.get("roleKey");
+                    String roleString = String.format("RoleID: %s%nRole Name: %s%nRole Key: %s%n",
+                            id, name, key);
+                    sb.append(roleString);
                     sb.append("\n");
                 }
                 return sb.toString();

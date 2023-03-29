@@ -15,7 +15,6 @@ public class MainMenu implements Menu {
             [1] BUILDING MENU
             [2] FLAT MENU
             [3] ROLE MENU
-            [4] PERMISSION MENU
             [q] logout
             """;
 
@@ -51,6 +50,11 @@ public class MainMenu implements Menu {
                     case "2" -> {
                         Menu flatMenu = new FlatMenu(scanner, client, userKey);
                         flatMenu.run();
+                        response = null;
+                    }
+                    case "3" -> {
+                        Menu roleMenu = new RoleMenu(scanner, client, userKey);
+                        roleMenu.run();
                         response = null;
                     }
                     default -> {

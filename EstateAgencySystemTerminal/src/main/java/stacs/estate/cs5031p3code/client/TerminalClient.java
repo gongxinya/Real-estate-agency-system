@@ -287,4 +287,44 @@ public class TerminalClient {
                 .block();
         return ResponseHandler.parseListFlat(response);
     }
+
+    public String assignRoleToUser(String userKey, String userId, String roleId) throws WebClientException {
+        Map<?, ?> response = client.post()
+                .uri("/user/role/" + userId + "/" + roleId)
+                .header("user_key", userKey)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+        return ResponseHandler.parseVoid(response);
+    }
+
+    public String deleteRoleForUser(String userKey, String userId, String roleId) throws WebClientException {
+        Map<?, ?> response = client.delete()
+                .uri("/user/role/" + userId + "/" + roleId)
+                .header("user_key", userKey)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+        return ResponseHandler.parseVoid(response);
+    }
+
+    public String listRoleForUser(String userKey, String userId) {
+        Map<?, ?> response = client.get()
+                .uri("/user/role/list/" + userId)
+                .header("user_key", userKey)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+        return ResponseHandler.parseListRole(response);
+    }
+
+    public String listAllRoles(String userKey) {
+        Map<?, ?> response = client.get()
+                .uri("/role/list")
+                .header("user_key", userKey)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+        return ResponseHandler.parseListRole(response);
+    }
 }

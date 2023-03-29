@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.json.BasicJsonTester;
-import org.springframework.boot.test.json.JsonContent;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,11 +19,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-
-public class TerminalClientFlatTest {
+public class TerminalClientRoleTest {
     private static MockWebServer mockWebServer;
     private TerminalClient client;
     private String successVoidJson;
@@ -49,81 +46,39 @@ public class TerminalClientFlatTest {
     }
 
     @Test
-    void createFlatByBuildingIdTest() throws InterruptedException {
+    void assignRoleToUserTest() throws InterruptedException {
         mockWebServer.enqueue(
                 new MockResponse().setResponseCode(200)
                         .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .setBody(successVoidJson)
         );
 
-        client.createFlatByBuildingId("key", "123", "name", "area");
+        client.assignRoleToUser("key", "user2", "role1");
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertEquals("POST", request.getMethod());
-        assertEquals("/flat/create/123", request.getPath());
-
-        JsonContent<Object> body = jsonTester.from(request.getBody().readUtf8());
-        assertThat(body).extractingJsonPathStringValue("$.buildingId").isEqualTo("123");
-        assertThat(body).extractingJsonPathStringValue("$.flatName").isEqualTo("name");
-        assertThat(body).extractingJsonPathStringValue("$.flatArea").isEqualTo("area");
-    }
-
-    @Test
-    void deleteFlatByIdTest() throws InterruptedException {
-        mockWebServer.enqueue(
-                new MockResponse().setResponseCode(200)
-                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .setBody(successVoidJson)
-        );
-
-        client.deleteFlatById("keyDeleteId", "flatId");
-
-        RecordedRequest request = mockWebServer.takeRequest();
-        assertEquals("DELETE", request.getMethod());
-        assertEquals("/flat/delete/flatId", request.getPath());
-        assertEquals("keyDeleteId", request.getHeader("user_key"));
-    }
-
-    @Test
-    void updateFlatByIdTest() throws InterruptedException {
-        mockWebServer.enqueue(
-                new MockResponse().setResponseCode(200)
-                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .setBody(successVoidJson)
-        );
-
-        client.updateFlatById("key", "flatId", "", "", "", "");
-
-        RecordedRequest request = mockWebServer.takeRequest();
-        assertEquals("PUT", request.getMethod());
-        assertEquals("/flat/update/flatId", request.getPath());
+        assertEquals("/user/role/user2/role1", request.getPath());
         assertEquals("key", request.getHeader("user_key"));
     }
 
     @Test
-    void listAllFlatsTest() throws InterruptedException {
-        Map<String, Object> map = new HashMap<>();
-        map.put("code", HttpStatus.OK.value());
-        map.put("message", "");
-        map.put("data", new ArrayList<>());
-        String jsonString = new JSONObject(map).toString();
-
+    void deleteRoleForUserTest() throws InterruptedException {
         mockWebServer.enqueue(
                 new MockResponse().setResponseCode(200)
                         .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .setBody(jsonString)
+                        .setBody(successVoidJson)
         );
 
-        client.listAllFlats("keyListFlats");
+        client.deleteRoleForUser("key", "04", "32");
 
         RecordedRequest request = mockWebServer.takeRequest();
-        assertEquals("GET", request.getMethod());
-        assertEquals("/flat/list", request.getPath());
-        assertEquals("keyListFlats", request.getHeader("user_key"));
+        assertEquals("DELETE", request.getMethod());
+        assertEquals("/user/role/04/32", request.getPath());
+        assertEquals("key", request.getHeader("user_key"));
     }
 
     @Test
-    void listAllFlatsByBuildingIdTest() throws InterruptedException {
+    void listRoleForUserTest() throws InterruptedException {
         Map<String, Object> map = new HashMap<>();
         map.put("code", HttpStatus.OK.value());
         map.put("message", "");
@@ -136,12 +91,34 @@ public class TerminalClientFlatTest {
                         .setBody(jsonString)
         );
 
-        client.listAllFlatsByBuildingId("keyListFlats", "buildingId");
+        client.listRoleForUser("key", "user07");
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertEquals("GET", request.getMethod());
-        assertEquals("/flat/list/buildingId", request.getPath());
-        assertEquals("keyListFlats", request.getHeader("user_key"));
+        assertEquals("/user/role/list/user07", request.getPath());
+        assertEquals("key", request.getHeader("user_key"));
+    }
+
+    @Test
+    void listAllRolesTest() throws InterruptedException {
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", HttpStatus.OK.value());
+        map.put("message", "");
+        map.put("data", new ArrayList<>());
+        String jsonString = new JSONObject(map).toString();
+
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(200)
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(jsonString)
+        );
+
+        client.listAllRoles("key");
+
+        RecordedRequest request = mockWebServer.takeRequest();
+        assertEquals("GET", request.getMethod());
+        assertEquals("/role/list", request.getPath());
+        assertEquals("key", request.getHeader("user_key"));
     }
 
     @AfterAll

@@ -293,11 +293,11 @@ const App = () => {
     
 
 
-    Object.keys(rawRowData).forEach((field) => {
-      if (rawRowData[field] === updatedRecord[field] && field !== 'flatId') {
-        updatedRecord[field] = null;
-      }
-  });
+  //   Object.keys(rawRowData).forEach((field) => {
+  //     if (rawRowData[field] === updatedRecord[field] && field !== 'flatId') {
+  //       updatedRecord[field] = null;
+  //     }
+  // });
   console.log('after data:')
   console.log(updatedRecord)
   
@@ -336,7 +336,6 @@ const App = () => {
     const headers = {
       "user_key": localStorage.getItem("user_key")
     };
-    // axios.delete('http://localhost:8080/flat/delete/6'
       axios.delete('http://localhost:8080/flat/delete/' + flatId
       , { headers })
       .then((response) => {

@@ -14,18 +14,38 @@ import BuildingTable from "../src/components/BuildingTable";
 import AddBuilding from '../src/components/AddBuilding';
 import BuildingTable_Guest from "../src/components/BuildingTable_Guest";
 import GuestScreen from '../src/screens/GuestScreen';
-import Implementation from '../src/Implementation'
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 
 const App = () => {
+  const [isConnected, setIsConnected] = useState(true);
+
+  useEffect(() => {
+    const checkServerConnection = async () => {
+      try {
+        await axios.get('http://localhost:8080/health');
+        setIsConnected(true);
+      } catch (error) {
+        setIsConnected(false);
+      }
+    };
+
+    checkServerConnection();
+    const intervalId = setInterval(checkServerConnection, 5000);
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
-    // <Router>
-    //   <div className="App">
-    //     <Routes />
-    //   </div>
-    // </Router>
     <div>
-              <Implementation/>
+      {!isConnected && (
+        <p>The internet has been lost.</p>
+      )}
+      { <Router>
+      <div className="App">
+        <Routes />
+      </div>
+    </Router>}
     </div>
   );
 };

@@ -99,9 +99,6 @@ const App = () => {
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2 style={{ margin: 20 }}>Flat List</h2>
-        <Link to="/addFlat">
-          <Button type="primary" style={{ right: 20 }}>Add Flat</Button>
-        </Link>
       </div>
       <Table columns={columns} dataSource={data} />;
 

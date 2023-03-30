@@ -2,29 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, message } from 'antd';
 import axios from 'axios';
 
-
-
-
 const UserProfile = () => {
     const [form] = Form.useForm();
     const [showPassword, setShowPassword] = useState(false);
-    const [userData, setUserData] = useState({
-        // userId: '123456',
-        // userName: '',
-        // userEmail: 'johndoe@example.com',
-        // userPhone: '12345678',
-        // userAddress: '123 Main St',
-        // userPassword: '12345678',
-    });
+    const [userData, setUserData] = useState({});
 
     useEffect(() => {
-        // console.log(data1)
-        // Replace YOUR_TOKEN_HERE with the actual token value
-        // const headers = { Authorization: `Bearer ${localStorage.getItem("user_key")}`};
         const headers = { "user_key": localStorage.getItem("user_key") };
         axios.get('http://localhost:8080/user/view', { headers })
             .then((response) => {
-                console.log(response.data)
                 setUserData(response.data.data)
                 form.setFieldsValue({
                     userId: response.data.data.userId,
@@ -37,38 +23,26 @@ const UserProfile = () => {
             });
     }, []);
 
-
-
-
-
-    const handleShowPassword = () => {
-        setShowPassword(!showPassword);
-    };
-
     const handleFormSubmit = (values) => {
         const headers = { "user_key": localStorage.getItem("user_key") };
         const formFields = form.getFieldsValue(true);
-        const updatedFields = values;        
+        const updatedFields = values;
         Object.keys(formFields).forEach((field) => {
-            if (formFields[field] === userData[field] && field !== 'userId') {
+            if (formFields[field] === userData[field] && field !== 'userId' && field !== 'userEmail') {
                 updatedFields[field] = null;
             }
         });
-        console.log(updatedFields)
+  
         axios.put('http://localhost:8080/user/update', updatedFields, { headers })
-      .then((response) => {
-        if(response.data.code === 200){
-            message.success(response.data.message); // display success message
-          } else {
-            message.error(response.data.message); // display error message
-          }
-      });
+            .then((response) => {
+                if (response.data.code === 200) {
+                    message.success(response.data.message); // display success message
+                } else {
+                    message.error(response.data.message); // display error message
+                }
+            });
     };
-
-
-
     return (
-
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Profile</h1>
             <Form
@@ -76,16 +50,12 @@ const UserProfile = () => {
                 layout="vertical"
                 onFinish={handleFormSubmit}
             >
-
                 <Form.Item
                     label="ID"
                     name="userId"
                 >
-                    <Input disabled/>
+                    <Input disabled />
                 </Form.Item>
-
-
-
                 <Form.Item
                     label="Name"
                     name="userName"

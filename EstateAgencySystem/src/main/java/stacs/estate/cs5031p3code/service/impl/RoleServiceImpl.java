@@ -121,12 +121,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         }
 
         // Keep the uniqueness of role name.
-        if (!Objects.isNull(role.getRoleName())) {
-            if (StringUtils.hasText(role.getRoleName())) {
-                this.checkRoleName(role);
-            } else {
-                throw new EstateException("Role name cannot be empty!");
-            }
+        if (Objects.isNull(role.getRoleName()) || !StringUtils.hasText(role.getRoleName())) {
+            throw new EstateException("Role name cannot be empty!");
+        } else {
+            this.checkRoleName(role);
         }
 
         // Update role.
@@ -161,8 +159,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     public void checkRoleName(Role role) throws EstateException {
         var roleQueryWrapper = new LambdaQueryWrapper<Role>();
         roleQueryWrapper.eq(Role::getRoleName, role.getRoleName());
-        var count = roleMapper.selectCount(roleQueryWrapper);
-        if (count > 0) {
+        var roleNameList = roleMapper.selectList(roleQueryWrapper)
+                .stream()
+                .filter(role1 -> !Objects.equals(role.getRoleId(), role1.getRoleId()))
+                .map(Role::getRoleName)
+                .toList();
+        if (roleNameList.contains(role.getRoleName())) {
             throw new EstateException("Role name is existed!");
         }
     }

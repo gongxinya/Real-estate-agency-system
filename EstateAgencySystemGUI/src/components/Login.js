@@ -7,9 +7,6 @@ import { useState } from 'react';
 const App = () => {
   const history = useHistory(); // Initialize useHistory
   const [error, setError] = useState(null);
-  // const [userEmail, setUserEmail] = useState("");
-  // const [userPassword, setUserPassword] = useState("");
-
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
 
@@ -37,7 +34,7 @@ const App = () => {
               message.success(loginMessage)
               history.push('/adminScreen');
             } else {
-              axios.get('http://localhost:8080/building/create',
+              axios.post('http://localhost:8080/building/create',
                 {
                   buildingName: null,
                   buildingAddress: null,
@@ -45,6 +42,8 @@ const App = () => {
                 , { headers }
               ).then((response) => {
                 message.success(loginMessage)
+                console.log('11111')
+                console.log(response.data.code)
                 response.data.code === 500 ? history.push('/managerScreen') : history.push('/guestScreen')
               })
             }

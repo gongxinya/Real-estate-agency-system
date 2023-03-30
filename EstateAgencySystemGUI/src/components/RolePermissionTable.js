@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Table, Tag, Button, Modal, Form, Input, Select, message } from 'antd';
-import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 

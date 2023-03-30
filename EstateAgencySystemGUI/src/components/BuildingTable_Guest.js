@@ -3,17 +3,15 @@ import { Table } from 'antd';
 import axios from 'axios';
 
 
-const App = () => {
+const BuilidngTable_Guest = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-
         const fetchData = async () => {
             const headers = { "user_key": localStorage.getItem("user_key") };
-            axios.get('http://localhost:8080/building/list'
+            axios.get('http://localhost:8080/building/list' // get all building
                 , { headers }
             ).then((response) => {
-                console.log(response.data.data)
                 setData(response.data.data);
             });
         };
@@ -51,10 +49,5 @@ const App = () => {
 
         </>
     )
-
-
-
-
-
 }
-export default App;
+export default BuilidngTable_Guest;

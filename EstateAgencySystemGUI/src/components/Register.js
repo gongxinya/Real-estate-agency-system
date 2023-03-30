@@ -1,10 +1,8 @@
-import { AutoComplete, Button, Cascader, Checkbox, Col, Form, Input, InputNumber, Row, Select, message } from 'antd';
-import { useState } from 'react';
+import { Button, Form, Input, message } from 'antd';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
-const formItemLayout = {
+const formItemLayout = { // set the layout
   labelCol: {
     xs: {
       span: 24,
@@ -37,7 +35,7 @@ const tailFormItemLayout = {
 const App = () => {
   const history = useHistory();
   const [form] = Form.useForm();
-  const onFinish = (values) => {
+  const onFinish = (values) => { // send data to the server when the user clicks submit
     axios.post('http://localhost:8080/user/create',
       {
         userEmail: values.email,
@@ -47,7 +45,7 @@ const App = () => {
         userPhone: values.phone,
       })
       .then((response) => {
-        if(response.data.code === 200){
+        if (response.data.code === 200) {
           message.success(response.data.message); // display success message 
           history.push('/')
         } else {

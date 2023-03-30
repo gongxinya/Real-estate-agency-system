@@ -5,7 +5,6 @@ import Register from "../src/components/Register";
 import AddFlat from "../src/components/AddFlat";
 import AdminScreen from '../src/screens/AdminScreen';
 import UserProfile from "../src/components/UserProfile";
-import UserForm from '../src/components/UserForm';
 import ManagerScreen from '../src/screens/ManagerScreen';
 import GuestScreen from '../src/screens/GuestScreen';
 import RolePermissionTable from '../src/components/RolePermissionTable';
@@ -38,10 +37,6 @@ const App = () => {
 
         <Route path="/userProfile">
           <UserProfile />
-        </Route>
-
-        <Route path="/userForm">
-          <UserForm />
         </Route>
 
         <Route path="/addBuilding">

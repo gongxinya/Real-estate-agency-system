@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Table, Button } from 'antd';
-import { Link } from 'react-router-dom';
+import { Table } from 'antd';
 import axios from 'axios';
 
 
@@ -8,34 +7,32 @@ const App = () => {
   const [data, setData] = useState([]);
   const [buildingOptions, setBuildingOptions] = useState([]);
 
-
-
   useEffect(() => {
     const fetchData = async () => {
-    const headers = { "user_key": localStorage.getItem("user_key") };
+      const headers = { "user_key": localStorage.getItem("user_key") };
 
-    axios.get('http://localhost:8080/flat/list'
-      , { headers }
-    ).then((response) => {
-      setData(response.data.data);
-    });
+      axios.get('http://localhost:8080/flat/list'
+        , { headers }
+      ).then((response) => {
+        setData(response.data.data);
+      });
 
-    axios.get('http://localhost:8080/building/list'
-      , { headers }
-    ).then((response) => {
-      setBuildingOptions(response.data.data.map((option) => ({
-        value: option.buildingId,
-        label: option.buildingName,
-      })));
+      axios.get('http://localhost:8080/building/list'
+        , { headers }
+      ).then((response) => {
+        setBuildingOptions(response.data.data.map((option) => ({
+          value: option.buildingId,
+          label: option.buildingName,
+        })));
 
 
-    });
-  };
-  fetchData();
-
+      });
+    };
+    fetchData();
   }, []);
 
 
+  // Although the customer gets the same data list as admin/manager from the server, the customer cannot view the owner of the house
   const columns = [
     {
       title: 'ID',
@@ -94,7 +91,7 @@ const App = () => {
     setData(updatedData);
   };
 
-  
+
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

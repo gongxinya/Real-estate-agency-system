@@ -1,23 +1,17 @@
 import { useEffect, useState } from 'react';
-import { Table, Button, Space, Input, Select, message } from 'antd';
+import { Table, Button, Space, Input, message } from 'antd';
 import { EditOutlined, DeleteOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
-
-const { Option } = Select;
-
-const App = () => {
+const UserTable = () => {
   const [data, setData] = useState([]);
-  const [rawData, setRawData] = useState([]);
   const [editableRowId, setEditableRowId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       const headers = { "user_key": localStorage.getItem("user_key") };
-      axios.get('http://localhost:8080/user/list', { headers }).then((response) => {
+      axios.get('http://localhost:8080/user/list', { headers }).then((response) => { //get user list
         setData(response.data.data);
-        setRawData(response.data.data);
-        console.log(response.data.data);
       });
     };
     fetchData();
@@ -39,7 +33,7 @@ const App = () => {
         const isEditable = record.userId === editableRowId;
         return (
           <div
-            onClick={() => {
+            onClick={() => { //the row enters the modifiable state after being clicked
               if (!isEditable) {
                 setEditableRowId(record.userId);
               }
@@ -65,12 +59,12 @@ const App = () => {
       sorter: (a, b) => a.userPhone - b.userPhone,
       width: '15%',
       render: (text, record) => {
-        const isEditable = record.flatId === editableRowId;
+        const isEditable = record.userId === editableRowId;
         return (
           <div
             onClick={() => {
               if (!isEditable) {
-                setEditableRowId(record.flatId);
+                setEditableRowId(record.userId);
               }
             }}
           >
@@ -222,85 +216,58 @@ const App = () => {
   ];
 
   const handleInputChange = (updatedRecord) => {
-    console.log(updatedRecord)
     const updatedData = data.map((record) => {
-        if (record.userId === updatedRecord.userId) {
-            return { ...record, ...updatedRecord };
-        } else {
-            return record;
-        }
+      if (record.userId === updatedRecord.userId) {
+        return { ...record, ...updatedRecord };
+      } else {
+        return record;
+      }
     });
     setData(updatedData);
-    // console.log(updatedData)
-};
+  };
 
-const handleUpdateSubmit = (updatedRecord) => {
-
-
-
-    // const rawRowData = rawData.find(item => item.userId === updatedRecord.userId)
-
-
-    // Object.keys(rawRowData).forEach((field) => {
-    //     if (rawRowData[field] === updatedRecord[field] && field !== 'userId') {
-    //       updatedRecord[field] = null;
-    //     }
-    // });
-
-    // console.log(updatedRecord)
-
-
+  const handleUpdateSubmit = (updatedRecord) => {
     const headers = { "user_key": localStorage.getItem("user_key") };
 
-    // // Send another HTTP request to get the data
-    // axios.get('http://localhost:8080/user/list', { headers }).then((response) => {
-    //     setData(response.data.data);
-    // });
-
-    // Send an HTTP request to update the data
     axios.put('http://localhost:8080/user/update/' + updatedRecord.userId, updatedRecord
-        , { headers })
-        .then((response) => {
-          if(response.data.code === 200){
-            message.success(response.data.message); // display success message
-          } else {
-            message.error(response.data.message); // display error message
-          }
-            console.log(response.data.message)
-            axios.get('http://localhost:8080/user/list', { headers }).then((response) => {
-                setData(response.data.data);
-                // setRawData(response.data.data);
-            });
+      , { headers })
+      .then((response) => {
+        if (response.data.code === 200) {
+          message.success(response.data.message); // display success message
+        } else {
+          message.error(response.data.message); // display error message
+        }
+        axios.get('http://localhost:8080/user/list', { headers }).then((response) => {
+          setData(response.data.data); // get userlist 
         });
+      });
 
     setEditableRowId(null);
-};
+  };
 
-const handleDelete = (userId) => {
+  const handleDelete = (userId) => {
     const headers = {
-        "user_key": localStorage.getItem("user_key")
+      "user_key": localStorage.getItem("user_key")
     };
-        axios.delete('http://localhost:8080/user/delete/' + userId
-        , { headers })
-        .then((response) => {
-          if(response.data.code === 200){
-            message.success(response.data.message); // display success message
-            setData(data.filter((record) => record.userId !== userId));
-          } else {
-            message.error(response.data.message); // display error message
-          }
-            console.log(response.data)
-        });
-};
+    axios.delete('http://localhost:8080/user/delete/' + userId
+      , { headers })
+      .then((response) => {
+        if (response.data.code === 200) {
+          message.success(response.data.message); // display success message
+          setData(data.filter((record) => record.userId !== userId)); // successfully deleted row is removed
+        } else {
+          message.error(response.data.message); // display error message
+        }
+      });
+  };
 
-  
 
 
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
 
- 
+
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -311,6 +278,4 @@ const handleDelete = (userId) => {
   );
 };
 
-
-
-export default App;
+export default UserTable;

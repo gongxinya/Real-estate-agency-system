@@ -9,7 +9,7 @@ const MyHeader = () => {
   const history = useHistory();
 
   const handleLogout = () => {
-    const headers = { "user_key": localStorage.getItem("user_key") };
+    const headers = { "user_key": localStorage.getItem("user_key") };  // Get the token of the current user from localStorage
 
     axios.get('http://localhost:8080/user/logout', { headers })
       .then((response) => {
@@ -18,7 +18,6 @@ const MyHeader = () => {
         localStorage.clear();
         // Redirect the user to the login page
         history.push('/login');
-        console.log(response.data)
       })
       .catch((error) => {
         // Handle any error that occurs during the API request

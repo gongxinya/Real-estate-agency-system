@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Table, Button, Space, Input, Select, DatePicker, message } from 'antd';
+import { Table, Button, Space, Input, message } from 'antd';
 import { EditOutlined, DeleteOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import moment from 'moment';
 
-const App = () => {
+const BuildingTable = () => {
     const [data, setData] = useState([]);
-    const [rawData, setRawData] = useState([]);
     const [editableRowId, setEditableRowId] = useState(null);
 
     useEffect(() => {
@@ -17,9 +15,7 @@ const App = () => {
             axios.get('http://localhost:8080/building/list'
                 , { headers }
             ).then((response) => {
-                console.log(response.data.data)
                 setData(response.data.data);
-                setRawData(response.data.data);
             });
         };
         fetchData();
@@ -41,7 +37,7 @@ const App = () => {
                 const isEditable = record.buildingId === editableRowId;
                 return (
                     <div
-                        onClick={() => {
+                        onClick={() => { // after clicking, the row becomes editable
                             if (!isEditable) {
                                 setEditableRowId(record.buildingId);
                             }
@@ -125,7 +121,6 @@ const App = () => {
 
 
     const handleInputChange = (updatedRecord) => {
-        console.log(updatedRecord)
         const updatedData = data.map((record) => {
             if (record.buildingId === updatedRecord.buildingId) {
                 return { ...record, ...updatedRecord };
@@ -134,28 +129,10 @@ const App = () => {
             }
         });
         setData(updatedData);
-        console.log(updatedData)
     };
 
     const handleUpdateSubmit = (updatedRecord) => {
 
-        console.log('updatedRecord:')
-        console.log(updatedRecord)
-        console.log('rawData:')
-        console.log(rawData)
-        const rawRowData = rawData.find(item => item.buildingId === updatedRecord.buildingId)
-        const updateData1 = updatedRecord
-
-        console.log('raw data:')
-        console.log(rawRowData)
-        console.log('new data:')
-        console.log(updatedRecord)
-
-        Object.keys(rawRowData).forEach((field) => {
-            if (rawRowData[field] === updateData1[field] && field !== 'buildingId') {
-                updateData1[field] = null;
-            }
-        });
 
         const headers = { "user_key": localStorage.getItem("user_key") };
 
@@ -165,38 +142,36 @@ const App = () => {
         });
 
         // Send an HTTP request to update the data
-            axios.put('http://localhost:8080/building/update/' + updatedRecord.buildingId, updateData1
+        axios.put('http://localhost:8080/building/update/' + updatedRecord.buildingId, updatedRecord
             , { headers })
             .then((response) => {
-                if(response.data.code === 200){
+                if (response.data.code === 200) {
                     message.success(response.data.message); // display success message
-                  } else {
+                } else {
                     message.error(response.data.message); // display error message
-                  }
-                axios.get('http://localhost:8080/building/list', { headers }).then((response) => {
+                }
+                axios.get('http://localhost:8080/building/list', { headers }).then((response) => { //Get the latest modified data list from the server
                     setData(response.data.data);
-                    setRawData(response.data.data);
                 });
             });
 
-        setEditableRowId(null);
+        setEditableRowId(null); // After the update is complete, all rows will enter an unmodifiable state
     };
 
     const handleDelete = (buildingId) => {
         const headers = {
             "user_key": localStorage.getItem("user_key")
         };
-        // axios.delete('http://localhost:8080/building/delete/6'
-            axios.delete('http://localhost:8080/building/delete/'+ buildingId
+        axios.delete('http://localhost:8080/building/delete/' + buildingId
             , { headers })
             .then((response) => {
-                if(response.data.code === 200){
+                if (response.data.code === 200) {
                     message.success(response.data.message); // display success message
                     setData(data.filter((record) => record.buildingId !== buildingId));
-                  } else {
+                } else {
                     message.error(response.data.message); // display error message
-                  }
-                
+                }
+
             });
     };
 
@@ -216,4 +191,4 @@ const App = () => {
     )
 
 }
-export default App;
+export default BuildingTable;

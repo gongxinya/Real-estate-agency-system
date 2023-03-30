@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Layout, Menu } from "antd";
-
 import FlatTable from "../components/FaltTable";
 import UserTable from "../components/UserTable";
 import BuildingTable from "../components/BuildingTable";
@@ -11,8 +10,6 @@ const { Content } = Layout;
 
 const AdminScreen = () => {
   const [currentMenu, setCurrentMenu] = useState("UserList");
-
-
 
   const handleMenuClick = (e) => {
     setCurrentMenu(e.key);

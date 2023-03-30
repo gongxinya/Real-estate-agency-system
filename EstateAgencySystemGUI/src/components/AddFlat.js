@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Form, Input, InputNumber, Select, message, Button, DatePicker } from 'antd';
 import { UserOutlined, HomeOutlined, DollarOutlined } from '@ant-design/icons';
 import axios from 'axios';
+import moment from 'moment';
 
 const { Option } = Select;
 
@@ -26,14 +27,13 @@ const AddFlat = () => {
   }, []);
 
 
-
-
+  // click submit to try to create a new flat
   const onFinish = async (values) => {
     const headers = { "user_key": localStorage.getItem("user_key") };
     try {
       axios.post('http://localhost:8080/flat/create/' + values.buildingId, values, { headers })
         .then((response) => {
-          if(response.data.code === 200){
+          if (response.data.code === 200) {
             message.success(response.data.message); // display success message
           } else {
             message.error(response.data.message); // display error message
@@ -46,6 +46,7 @@ const AddFlat = () => {
 
 
 
+  // The form used to create a new flat, the input box has corresponding conditional judgment, cannot be empty or can only be a number
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <Form form={form} onFinish={onFinish}>
@@ -94,19 +95,20 @@ const AddFlat = () => {
           label="Sale Date"
         >
           <DatePicker
-            format="DD-MM-YYYY"
+            defaultValue={moment()}
+            format={'YYYY-MM-DD HH:mm:ss'}
             allowClear={false}
             onChange={(dateString) => {
-              form.setFieldsValue({ saleDate: dateString });
+              form.setFieldsValue({ flatSoldOutDate: dateString });
             }}
           />
         </Form.Item>
 
         <Form.Item
           name="userId"
-          label="Owner"
+          label="Owner ID"
         >
-          <Input
+          <InputNumber
             prefix={<UserOutlined />}
             placeholder="Owner Name"
           />

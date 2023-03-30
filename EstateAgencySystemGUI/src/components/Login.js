@@ -8,9 +8,6 @@ const App = () => {
   const history = useHistory(); // Initialize useHistory
   const [error, setError] = useState(null);
   const onFinish = (values) => {
-    console.log('Received values of form: ', values);
-
-
     axios.post('http://localhost:8080/user/login',
       {
         userEmail: values.email,
@@ -21,6 +18,7 @@ const App = () => {
         var loginMessage = responseData.message;
         var code = responseData.code;
         var data = responseData.data;
+        // conditional judgment is carried out through the user's authority, and different pages are entered according to the judgment result
         if (code !== 200) {
           setError(response.data.message)
           message.error(response.data.message)
@@ -42,8 +40,6 @@ const App = () => {
                 , { headers }
               ).then((response) => {
                 message.success(loginMessage)
-                console.log('11111')
-                console.log(response.data.code)
                 response.data.code === 500 ? history.push('/managerScreen') : history.push('/guestScreen')
               })
             }
@@ -75,8 +71,6 @@ const App = () => {
         >
           <Input prefix={<UserOutlined className="site-form-item-icon" />}
             placeholder="Email"
-          // value={userEmail}
-          // onChange={(e) => setUserEmail(e.target.value)}
           />
         </Form.Item>
         <Form.Item
@@ -92,8 +86,6 @@ const App = () => {
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
             placeholder="Password"
-          // value={userPassword}
-          // onChange={(e) => setUserPassword(e.target.value)}
           />
         </Form.Item>
         <Form.Item>
@@ -104,9 +96,7 @@ const App = () => {
             </Button>
           </Link>
 
-
           <Button type="primary" htmlType="submit" className="login-form-button"
-          // onClick={login} 
           >
             Log in
           </Button>

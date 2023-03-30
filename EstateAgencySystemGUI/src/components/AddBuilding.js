@@ -1,24 +1,24 @@
-import { Form, Input, Select, Button, message } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import { HomeOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
-const { Option } = Select;
 
 const AddBuilding = () => {
   const [form] = Form.useForm();
 
 
+  // click the submit button at the bottom to try to create a new building
   const onFinish = async (values) => {
     const headers = { "user_key": localStorage.getItem("user_key") };
     try {
       await axios.post('http://localhost:8080/building/create', values, { headers })
         .then((response) => {
-          if(response.data.code === 200){
+          if (response.data.code === 200) {
             message.success(response.data.message); // display success message
           } else {
             message.error(response.data.message); // display error message
           }
-          
+
         });
     } catch (error) {
       console.error(error);
@@ -26,7 +26,7 @@ const AddBuilding = () => {
   };
 
 
-
+  //Form for creating new building
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <Form form={form} onFinish={onFinish}>

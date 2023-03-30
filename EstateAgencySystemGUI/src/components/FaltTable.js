@@ -8,35 +8,32 @@ import moment from 'moment';
 
 const App = () => {
   const [data, setData] = useState([]);
-  const [rawData, setRawData] = useState([]);
   const [buildingOptions, setBuildingOptions] = useState([]);
   const [editableRowId, setEditableRowId] = useState(null);
 
 
   useEffect(() => {
     const fetchData = async () => {
-    const headers = { "user_key": localStorage.getItem("user_key") };
+      const headers = { "user_key": localStorage.getItem("user_key") };
 
-    axios.get('http://localhost:8080/flat/list'
-      , { headers }
-    ).then((response) => {
-      setData(response.data.data);
-      setRawData(response.data.data);
-      console.log(response.data.data)
-    });
+      axios.get('http://localhost:8080/flat/list'
+        , { headers }
+      ).then((response) => {
+        setData(response.data.data);
+      });
 
-    axios.get('http://localhost:8080/building/list'
-      , { headers }
-    ).then((response) => {
-      setBuildingOptions(response.data.data.map((option) => ({
-        value: option.buildingId,
-        label: option.buildingName,
-      })));
+      axios.get('http://localhost:8080/building/list' // get the building list
+        , { headers }
+      ).then((response) => {
+        setBuildingOptions(response.data.data.map((option) => ({ // user can only choose from the existing building when modifying the flat building
+          value: option.buildingId,
+          label: option.buildingName,
+        })));
 
 
-    });
-  };
-  fetchData();
+      });
+    };
+    fetchData();
 
   }, []);
 
@@ -57,7 +54,7 @@ const App = () => {
         const isEditable = record.flatId === editableRowId;
         return (
           <div
-            onClick={() => {
+            onClick={() => { // after clicking, the row becomes editable
               if (!isEditable) {
                 setEditableRowId(record.flatId);
               }
@@ -197,8 +194,8 @@ const App = () => {
           >
             {isEditable ? (
               <DatePicker
-                defaultValue={moment(text, 'DD-MM-YYYY')}
-                format={'DD-MM-YYYY'}
+                defaultValue={moment(text, 'YYYY-MM-DD HH:mm:ss')}
+                format={'YYYY-MM-DD HH:mm:ss'}
                 onChange={(date, dateString) =>
                   handleInputChange({ ...record, flatSoldOutDate: dateString })
                 }
@@ -273,6 +270,7 @@ const App = () => {
 
   ];
 
+  // record the data filled in by the user
   const handleInputChange = (updatedRecord) => {
     const updatedData = data.map((record) => {
       if (record.flatId === updatedRecord.flatId) {
@@ -284,68 +282,42 @@ const App = () => {
     setData(updatedData);
   };
 
+  // update one flat
   const handleUpdateSubmit = (updatedRecord) => {
-    const rawRowData = rawData.find(item => item.flatId === updatedRecord.flatId)
-    console.log('raw data:')
-    console.log(rawRowData)
-    console.log('new data:')
-    console.log(updatedRecord)
-    
-
-
-  //   Object.keys(rawRowData).forEach((field) => {
-  //     if (rawRowData[field] === updatedRecord[field] && field !== 'flatId') {
-  //       updatedRecord[field] = null;
-  //     }
-  // });
-  console.log('after data:')
-  console.log(updatedRecord)
-  
-  const headers = { "user_key": localStorage.getItem("user_key") };
-
-  // Send another HTTP request to get the data
-  axios.get('http://localhost:8080/flat/list', { headers }).then((response) => {
-    setData(response.data.data);
-  });
-
-
-
-
-
-
-    // Send an HTTP request to update the data
+    const headers = { "user_key": localStorage.getItem("user_key") };
+    // send an HTTP request to update the data
     axios.put('http://localhost:8080/flat/update/' + updatedRecord.flatId, updatedRecord
       , { headers })
       .then((response) => {
-        if(response.data.code === 200){
+        if (response.data.code === 200) {
           message.success(response.data.message); // display success message
         } else {
           message.error(response.data.message); // display error message
         }
-        console.log(response.data.message)
-  axios.get('http://localhost:8080/flat/list', { headers }).then((response) => {
-    setData(response.data.data);
-    setRawData(response.data.data);
-  });
+        axios.get('http://localhost:8080/flat/list', { headers }).then((response) => { // get the latest data list after the update
+          setData(response.data.data);
+        });
       });
 
     setEditableRowId(null);
   };
 
+
+  // delete one flat
   const handleDelete = (flatId) => {
     const headers = {
       "user_key": localStorage.getItem("user_key")
     };
-      axios.delete('http://localhost:8080/flat/delete/' + flatId
+    axios.delete('http://localhost:8080/flat/delete/' + flatId
       , { headers })
       .then((response) => {
-        if(response.data.code === 200){
+        if (response.data.code === 200) {
           setData(data.filter((record) => record.flatId !== flatId));
           message.success(response.data.message); // display success message
         } else {
           message.error(response.data.message); // display error message
         }
-        
+
       });
   };
 

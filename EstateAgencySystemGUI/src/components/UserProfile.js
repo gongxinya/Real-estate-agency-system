@@ -3,12 +3,12 @@ import { Form, Input, Button, message } from 'antd';
 import axios from 'axios';
 
 const UserProfile = () => {
-    const [form] = Form.useForm();
-    const [showPassword, setShowPassword] = useState(false);
+    const showPassword = false; // Do not display user password by default
+    const [form] = Form.useForm(); 
     const [userData, setUserData] = useState({});
 
     useEffect(() => {
-        const headers = { "user_key": localStorage.getItem("user_key") };
+        const headers = { "user_key": localStorage.getItem("user_key") }; //
         axios.get('http://localhost:8080/user/view', { headers })
             .then((response) => {
                 setUserData(response.data.data)
@@ -32,7 +32,7 @@ const UserProfile = () => {
                 updatedFields[field] = null;
             }
         });
-  
+
         axios.put('http://localhost:8080/user/update', updatedFields, { headers })
             .then((response) => {
                 if (response.data.code === 200) {
@@ -54,14 +54,14 @@ const UserProfile = () => {
                     label="ID"
                     name="userId"
                 >
-                    <Input disabled />
+                    <Input disabled /> 
                 </Form.Item>
                 <Form.Item
                     label="Name"
                     name="userName"
                     rules={[
                         {
-                            required: true,
+                            required: true, // username can not be empty
                             message: 'Please input your name!',
                             value: 'name'
                         },
@@ -91,7 +91,7 @@ const UserProfile = () => {
                     name="userPhone"
                     rules={[
                         {
-                            pattern: /^(\+)?([0-9]){10,14}$/,
+                            pattern: /^(\+)?([0-9]){10,14}$/, // restrict the format of the phone number
                             message: 'Please enter a valid phone!',
                         },
                     ]}
@@ -122,7 +122,7 @@ const UserProfile = () => {
                 </Form.Item>
                 <Form.Item>
                     <Button onClick={() => window.history.back()} style={{ marginRight: '30px' }}>Back</Button>
-                    <Button type="primary" htmlType="submit">Update</Button>
+                    <Button type="primary" htmlType="submit">Update</Button> 
                 </Form.Item>
             </Form>
         </div>

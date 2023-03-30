@@ -85,7 +85,7 @@ public class RoleController {
      */
     @PutMapping("/update/{roleId}")
     @PreAuthorize("hasAuthority('role:update')")
-    public ResponseResult<Void> updateBuildingByBuildingId(@PathVariable Long roleId, @RequestBody Role role) {
+    public ResponseResult<Void> updateRoleByRoleId(@PathVariable Long roleId, @RequestBody Role role) {
         try {
             this.roleService.updateRoleByRoleId(roleId, role);
         } catch (EstateException e) {

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import stacs.estate.cs5031p3code.exception.EstateException;
 import stacs.estate.cs5031p3code.model.po.User;
 
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 0.0.1
  */
 @SpringBootTest
+@Transactional
 public class UserServiceTest {
 
     /**
@@ -36,9 +38,12 @@ public class UserServiceTest {
     @Test
     public void testLogin() {
         var user = User.builder().userEmail("hz65@st-andrews.ac.uk").userPassword("1234").build();
-        var map = userService.login(user);
-        assertNotNull(map);
-        assertNotNull(map.get("user_key"));
+        assertDoesNotThrow(() -> {
+            var map = userService.login(user);
+            assertNotNull(map);
+            assertNotNull(map.get("user_key"));
+        });
+
     }
 
     /**
@@ -64,9 +69,8 @@ public class UserServiceTest {
         actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
 
-
         // 3. Register successful!
-        var user3 = User.builder().userEmail("jw384@st-andrews.ac.uk").userName("Jiaxin").userPassword(passwordEncoder.encode("1234")).build();
+        var user3 = User.builder().userEmail("jw385@st-andrews.ac.uk").userName("Jiaxin").userPassword(passwordEncoder.encode("1234")).build();
         assertDoesNotThrow(() -> {
             userService.register(user3);
         });
@@ -105,7 +109,7 @@ public class UserServiceTest {
         assertEquals(expectedMessage, actualMessage);
 
         // 4. Delete successful!
-        Long userId4 = 4L;
+        Long userId4 = 2L;
         assertDoesNotThrow(() -> {
             userService.deleteUserById(userId4);
         });
@@ -144,7 +148,7 @@ public class UserServiceTest {
         assertEquals(expectedMessage, actualMessage);
 
         // 4. Update successful!
-        var user4 = User.builder().userId(1L).userPhone("110").build();
+        var user4 = User.builder().userId(1L).userPhone("07536").build();
         assertDoesNotThrow(() -> {
             userService.updateUserByUserId(user4.getUserId(), user4);
         });
@@ -167,6 +171,7 @@ public class UserServiceTest {
     @Test
     public void TestBCryptPasswordEncoder() {
         String encode = passwordEncoder.encode("1234");
-        System.out.println(encode);
+//        System.out.println(encode);
+        assertTrue(passwordEncoder.matches("1234", encode));
     }
 }

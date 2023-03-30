@@ -21,12 +21,12 @@ public interface UserService extends IService<User> {
      * @param user The user information.
      * @return Return a user_key.
      */
-    Map<String, String> login(User user);
+    Map<String, String> login(User user) throws EstateException;
 
     /**
      * The method for logout.
      */
-    void logout();
+    void logout() throws EstateException;
 
     /**
      * The method for register.

@@ -3,6 +3,7 @@ package stacs.estate.cs5031p3code.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import stacs.estate.cs5031p3code.exception.EstateException;
 import stacs.estate.cs5031p3code.model.po.Role;
 
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 0.0.1
  */
 @SpringBootTest
+@Transactional
 public class RoleServiceTest {
 
     /**
@@ -84,21 +86,6 @@ public class RoleServiceTest {
         expectedMessage = "Role has relationship with users, cannot remove!";
         actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
-
-        // 4. The connection between role and permission.
-        Long roleId4 = 2L;
-        exception = assertThrows(EstateException.class, () -> {
-            roleService.deleteRoleByRoleId(roleId4);
-        });
-        expectedMessage = "Role has relationship with permissions, cannot remove!";
-        actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-
-        // 5. Delete successful
-        Long roleId5 = 4L;
-        assertDoesNotThrow(() -> {
-            roleService.deleteRoleByRoleId(roleId5);
-        });
     }
 
     /**

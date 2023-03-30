@@ -58,13 +58,14 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             var claims = JwtUtil.parseJWT(token);
             userId = claims.getSubject();
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("User key is invalid!");
+            filterChain.doFilter(request, response);
+            return;
         }
         // Get user information in redis by userId.
         SecurityUser securityUser = redisCache.getCacheObject(userId);
         if (Objects.isNull(securityUser)) {
-            throw new RuntimeException("User is not login!");
+            filterChain.doFilter(request, response);
+            return;
         }
         // Verify token successfully, store into SecurityContextHolder.
         var authenticationToken = new UsernamePasswordAuthenticationToken(securityUser, null, securityUser.getAuthorities());

@@ -87,13 +87,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      * @return Return the user_key.
      */
     @Override
-    public Map<String, String> login(User user) {
+    public Map<String, String> login(User user) throws EstateException {
+        if (Objects.isNull(user)
+                || !StringUtils.hasText(user.getUserEmail())
+                || !StringUtils.hasText(user.getUserPassword())) {
+            throw new EstateException("User email or password cannot be empty!");
+        }
         var authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserEmail(), user.getUserPassword());
         // Get the authentication object.
         var authentication = this.authenticationManager.authenticate(authenticationToken);
         // Login failed.
         if (Objects.isNull(authentication)) {
-            throw new RuntimeException("Login failed!");
+            throw new EstateException("Login failed!");
         }
         // Get the authentication user.
         var securityUser = (SecurityUser) authentication.getPrincipal();
@@ -112,7 +117,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      * The method for logout.
      */
     @Override
-    public void logout() {
+    public void logout() throws EstateException {
         // Get user id string.
         var userId = this.getCurrentAuthenticationInformation().toString();
         // Delete the user id from redis.
@@ -319,13 +324,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      *
      * @return Return the user id.
      */
-    public Long getCurrentAuthenticationInformation() {
-        // Get the authentication information.
-        var authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        // Get the current user.
-        var securityUser = (SecurityUser) authentication.getPrincipal();
-        // Get user id.
-        return securityUser.getUser().getUserId();
+    public Long getCurrentAuthenticationInformation() throws EstateException {
+        try {
+            // Get the authentication information.
+            var authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+            // Get the current user.
+            var securityUser = (SecurityUser) authentication.getPrincipal();
+            // Get user id.
+            return securityUser.getUser().getUserId();
+        } catch (Exception e) {
+            throw new EstateException("Authentication has some error!");
+        }
     }
 }
 

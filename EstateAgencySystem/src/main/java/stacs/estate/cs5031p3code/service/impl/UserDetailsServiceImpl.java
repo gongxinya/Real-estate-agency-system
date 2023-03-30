@@ -50,7 +50,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         var user = userMapper.selectOne(queryWrapper);
         // Throw an exception if the user is not queried.
         if (Objects.isNull(user)) {
-            throw new RuntimeException("Email or password is error!");
+            throw new UsernameNotFoundException("Email or password is error!");
         }
         // Find the permission list.
         var list = permissionMapper.selectPermissionKeysByUserId(user.getUserId());

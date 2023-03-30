@@ -14,6 +14,7 @@ import org.springframework.boot.test.json.JsonContent;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.WebClientException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -134,6 +135,25 @@ public class TerminalClientFlatTest {
         assertEquals("GET", request.getMethod());
         assertEquals("/flat/list", request.getPath());
         assertEquals("keyListFlats", request.getHeader("user_key"));
+    }
+
+    @Test
+    void listAllFlatsFailureTest() throws InterruptedException {
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        map.put("message", "");
+        map.put("data", new ArrayList<>());
+        String jsonString = new JSONObject(map).toString();
+
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(jsonString)
+        );
+        assertThrows(WebClientException.class,
+                () -> client.listAllFlats("keyListFlats"));
+
+        RecordedRequest request = mockWebServer.takeRequest();
     }
 
     @Test

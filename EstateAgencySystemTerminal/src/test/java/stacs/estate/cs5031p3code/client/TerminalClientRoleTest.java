@@ -9,10 +9,10 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.json.BasicJsonTester;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.WebClientException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class TerminalClientRoleTest {
     private static MockWebServer mockWebServer;
     private TerminalClient client;
     private String successVoidJson;
-    private final BasicJsonTester jsonTester = new BasicJsonTester(this.getClass());
+    private String failureVoidJson;
 
     @BeforeAll
     static void setup() throws IOException {
@@ -43,10 +43,16 @@ public class TerminalClientRoleTest {
         map.put("message", "");
         map.put("data", null);
         successVoidJson = new JSONObject(map).toString();
+
+        Map<String, Object> map2 = new HashMap<>();
+        map2.put("code", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        map2.put("message", "");
+        map2.put("data", null);
+        failureVoidJson = new JSONObject(map2).toString();
     }
 
     @Test
-    void assignRoleToUserTest() throws InterruptedException {
+    void assignRoleToUserSuccessTest() throws InterruptedException {
         mockWebServer.enqueue(
                 new MockResponse().setResponseCode(200)
                         .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -59,6 +65,20 @@ public class TerminalClientRoleTest {
         assertEquals("POST", request.getMethod());
         assertEquals("/user/role/user2/role1", request.getPath());
         assertEquals("key", request.getHeader("user_key"));
+    }
+
+    @Test
+    void assignRoleToUserFailureTest() throws InterruptedException {
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(failureVoidJson)
+        );
+
+        assertThrows(WebClientException.class,
+                () -> client.assignRoleToUser("key", "user2", "role1"));
+
+        RecordedRequest request = mockWebServer.takeRequest();
     }
 
     @Test

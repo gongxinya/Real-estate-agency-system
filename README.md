@@ -20,7 +20,7 @@ mvn clean
 mvn test
 ```
 
-# Running the terminal server
+# Running the terminal client
 1. Download and unzip the submitted file
 2. Open the file in terminal
 3. Run the terminal client

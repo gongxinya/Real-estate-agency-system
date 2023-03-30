@@ -9,11 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>stacs.estate</groupId>
-    <artifactId>cs5031p3code</artifactId>
+    <artifactId>cs5031p3code-server</artifactId>
     <version>0.0.1</version>
     <packaging>war</packaging>
-    <name>cs5031p3code</name>
-    <description>cs5031p3code</description>
+    <name>cs5031p3code server</name>
+    <description>cs5031p3code server</description>
     <properties>
         <java.version>17</java.version>
     </properties>

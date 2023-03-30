@@ -30,7 +30,9 @@ public class ResponseHandler {
             Integer code = (Integer) response.get("code");
             if (code.equals(HttpStatus.OK.value())) {
                 Map<?, ?> data = (Map<?, ?>) response.get("data");
-                return (String) data.get("user_key");
+                if (data != null) {
+                    return (String) data.get("user_key");
+                }
             }
         }
         return null;
@@ -45,13 +47,15 @@ public class ResponseHandler {
             if (code.equals(HttpStatus.OK.value())) {
                 // contains data
                 Map<?, ?> data = (Map<?, ?>) response.get("data");
-                Integer id = (Integer) data.get("userId");
-                String email = (String) data.get("userEmail");
-                String name = (String) data.get("userName");
-                String phone = (String) data.get("userPhone");
-                String address = (String) data.get("userAddress");
-                return String.format("UserID: %s%nEmail: %s%nName: %s%nPhone: %s%nAddress: %s%n",
-                        id, email, name, phone, address);
+                if (data != null) {
+                    Integer id = (Integer) data.get("userId");
+                    String email = (String) data.get("userEmail");
+                    String name = (String) data.get("userName");
+                    String phone = (String) data.get("userPhone");
+                    String address = (String) data.get("userAddress");
+                    return String.format("UserID: %s%nEmail: %s%nName: %s%nPhone: %s%nAddress: %s%n",
+                            id, email, name, phone, address);
+                }
             }
             return (String) response.get("message");
         }

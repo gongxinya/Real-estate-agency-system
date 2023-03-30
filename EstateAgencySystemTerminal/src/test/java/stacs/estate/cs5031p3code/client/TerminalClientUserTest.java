@@ -14,6 +14,7 @@ import org.springframework.boot.test.json.JsonContent;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.WebClientException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class TerminalClientUserTest {
     }
 
     @Test
-    void loginTest() throws InterruptedException {
+    void loginSuccessTest() throws InterruptedException {
         // prepare json string
         Map<String, Object> map = new HashMap<>();
         map.put("code", HttpStatus.OK.value());
@@ -74,6 +75,27 @@ public class TerminalClientUserTest {
         JsonContent<Object> body = jsonTester.from(request.getBody().readUtf8());
         assertThat(body).extractingJsonPathStringValue("$.userEmail").isEqualTo("email");
         assertThat(body).extractingJsonPathStringValue("$.userPassword").isEqualTo("password");
+    }
+
+    @Test
+    void loginFailureTest() throws InterruptedException {
+        // prepare json string
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        map.put("message", "");
+        map.put("data", new HashMap<>());
+        String jsonString = new JSONObject(map).toString();
+
+        // mock server
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(jsonString)
+        );
+        assertThrows(WebClientException.class,
+                () -> client.login("email", "password"));
+
+        RecordedRequest request = mockWebServer.takeRequest();
     }
 
     @Test
@@ -159,6 +181,7 @@ public class TerminalClientUserTest {
         );
 
         String response = client.updateUser("keyUpdate", "", "", "", "", "");
+
         assertEquals("Nothing to update!", response);
     }
 
@@ -187,6 +210,7 @@ public class TerminalClientUserTest {
         );
 
         String response = client.updateUserById("keyUpdate", "byId", "", "", "", "", "");
+
         assertEquals("Nothing to update!", response);
     }
 

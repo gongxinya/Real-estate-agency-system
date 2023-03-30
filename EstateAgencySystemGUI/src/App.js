@@ -14,18 +14,19 @@ import BuildingTable from "../src/components/BuildingTable";
 import AddBuilding from '../src/components/AddBuilding';
 import BuildingTable_Guest from "../src/components/BuildingTable_Guest";
 import GuestScreen from '../src/screens/GuestScreen';
+import Implementation from '../src/Implementation'
 
 
 const App = () => {
   return (
-    <Router>
-      <div className="App">
-        <Routes />
-      </div>
-    </Router>
-    // <div>
-    //   <GuestScreen/>
-    // </div>
+    // <Router>
+    //   <div className="App">
+    //     <Routes />
+    //   </div>
+    // </Router>
+    <div>
+              <Implementation/>
+    </div>
   );
 };
 

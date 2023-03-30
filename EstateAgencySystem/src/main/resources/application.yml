@@ -14,6 +14,7 @@ spring:
     username: root
     password: BKbU8BQzQPhm0wetAI
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   # The configuration of redis.
   redis:
     host: 8.208.112.119

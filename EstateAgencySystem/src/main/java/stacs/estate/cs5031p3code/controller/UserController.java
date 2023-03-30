@@ -3,7 +3,6 @@ package stacs.estate.cs5031p3code.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import stacs.estate.cs5031p3code.exception.EstateException;
 import stacs.estate.cs5031p3code.model.po.User;
@@ -38,17 +37,18 @@ public class UserController {
      */
     @PostMapping("/login")
     public ResponseResult<Map<String, String>> login(@RequestBody User user) {
-        if (Objects.isNull(user)
-                || !StringUtils.hasText(user.getUserEmail())
-                || !StringUtils.hasText(user.getUserPassword())) {
+        Map<String, String> tokenMap;
+        try {
+            tokenMap = userService.login(user);
+        } catch (EstateException e) {
             return ResponseResult.<Map<String, String>>builder()
                     .data(null)
-                    .message("User email or password cannot be empty!")
+                    .message(e.getMessage())
                     .code(HttpStatus.UNAUTHORIZED.value())
                     .build();
         }
         return ResponseResult.<Map<String, String>>builder()
-                .data(userService.login(user))
+                .data(tokenMap)
                 .message("Login successful!")
                 .code(HttpStatus.OK.value())
                 .build();
@@ -61,7 +61,15 @@ public class UserController {
      */
     @GetMapping("/logout")
     public ResponseResult<Void> logout() {
-        this.userService.logout();
+        try {
+            this.userService.logout();
+        } catch (EstateException e) {
+            return ResponseResult.<Void>builder()
+                    .data(null)
+                    .message(e.getMessage())
+                    .code(HttpStatus.UNAUTHORIZED.value())
+                    .build();
+        }
         return ResponseResult.<Void>builder()
                 .data(null)
                 .message("Logout successful!")

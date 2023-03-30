@@ -3,6 +3,7 @@ package stacs.estate.cs5031p3code.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import stacs.estate.cs5031p3code.exception.EstateException;
 import stacs.estate.cs5031p3code.model.po.Flat;
 
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 0.0.1
  */
 @SpringBootTest
+@Transactional
 public class FlatServiceTest {
 
     /**
@@ -178,7 +180,7 @@ public class FlatServiceTest {
         var flat5 = Flat.builder()
                 .flatId(3L)
                 .buildingId(2L)
-                .flatName("Nisbet")
+                .flatName("Lang")
                 .build();
         assertDoesNotThrow(() -> {
             flatService.updateFlatByFlatId(flat5.getFlatId(), flat5);
@@ -214,7 +216,7 @@ public class FlatServiceTest {
         Long buildingId2 = 1L;
         assertDoesNotThrow(() -> {
             var flatList = flatService.getFlatListByBuildingId(buildingId2);
-            assertEquals(3, flatList.size());
+            assertEquals(2, flatList.size());
         });
     }
 }

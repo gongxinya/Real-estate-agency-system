@@ -3,6 +3,7 @@ package stacs.estate.cs5031p3code.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import stacs.estate.cs5031p3code.exception.EstateException;
 import stacs.estate.cs5031p3code.model.po.Building;
 
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 0.0.1
  */
 @SpringBootTest
+@Transactional
 public class BuildingServiceTest {
 
     /**
@@ -54,7 +56,7 @@ public class BuildingServiceTest {
 
         // 3. Creating building successful
         var building3 = Building.builder()
-                .buildingName("East Shore")
+                .buildingName("John Burnet Hall")
                 .buildingAddress("St Andrews")
                 .build();
         assertDoesNotThrow(() -> {
@@ -95,7 +97,7 @@ public class BuildingServiceTest {
         assertEquals(expectedMessage, actualMessage);
 
         // 4. Delete successful
-        Long buildingId4 = 4L;
+        Long buildingId4 = 3L;
         assertDoesNotThrow(() -> {
             buildingService.deleteBuildingById(buildingId4);
         });
@@ -120,7 +122,7 @@ public class BuildingServiceTest {
         // 2. Building name is existed!
         var building2 = Building.builder()
                 .buildingId(2L)
-                .buildingName("DRA")
+                .buildingName("David")
                 .build();
         exception = assertThrows(EstateException.class, () -> {
             buildingService.updateBuildingByBuildingId(building2.getBuildingId(), building2);
@@ -144,7 +146,7 @@ public class BuildingServiceTest {
         // 4. Update successful!
         var building4 = Building.builder()
                 .buildingId(2L)
-                .buildingName("David")
+                .buildingName("DRA")
                 .buildingAddress("Fife")
                 .build();
         assertDoesNotThrow(() -> {

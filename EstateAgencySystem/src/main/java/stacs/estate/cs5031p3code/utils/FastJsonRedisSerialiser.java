@@ -1,6 +1,5 @@
 package stacs.estate.cs5031p3code.utils;
 
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.parser.ParserConfig;

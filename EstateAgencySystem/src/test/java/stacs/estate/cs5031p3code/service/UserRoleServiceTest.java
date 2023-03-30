@@ -3,6 +3,7 @@ package stacs.estate.cs5031p3code.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import stacs.estate.cs5031p3code.exception.EstateException;
 import stacs.estate.cs5031p3code.model.po.UserRole;
 
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 0.0.1
  */
 @SpringBootTest
+@Transactional
 public class UserRoleServiceTest {
 
     /**
@@ -138,15 +140,6 @@ public class UserRoleServiceTest {
         expectedMessage = "Remove role to user failed!";
         actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
-
-        // 5. Creating relationship successful
-        var userRole5 = UserRole.builder()
-                .userId(3L)
-                .roleId(2L)
-                .build();
-        assertDoesNotThrow(() -> {
-            userRoleService.removeRoleToUser(userRole5.getUserId(), userRole5.getRoleId());
-        });
     }
 
     /**

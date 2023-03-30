@@ -3,6 +3,7 @@ package stacs.estate.cs5031p3code.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import stacs.estate.cs5031p3code.exception.EstateException;
 import stacs.estate.cs5031p3code.model.po.RolePermission;
 
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 0.0.1
  */
 @SpringBootTest
+@Transactional
 public class RolePermissionServiceTest {
 
     /**
@@ -141,7 +143,7 @@ public class RolePermissionServiceTest {
 
         // 5. Creating relationship successful.
         var rolePermission5 = RolePermission.builder()
-                .roleId(2L)
+                .roleId(1L)
                 .permissionId(28L)
                 .build();
         assertDoesNotThrow(() -> {

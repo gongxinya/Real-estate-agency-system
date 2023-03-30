@@ -1,38 +1,52 @@
 # Production environment
 
-# Running the back-end server
+# Running the server
 1. Keep the port "8080" open and available
 2. Download and unzip the submitted file
-2. Open the file in terminal
-3. Run the server
+3. Open the file in terminal
+4. Run the server
 ```bash
-java -jar cs5031p2code-0.0.1.war
+java -jar cs5031p3code-server-0.0.1.war
 ```
 
-# Running the front-end UI
-1. Navigate to the 'TravelPlannerSystemUI'
+# Testing the server
+1. Navigate into 'EstateAgencySystem'
 ```bash
-cd TravelPlannerSystemUI
+cd EstateAgencySystem
+```
+2. Clean and test
+```bash
+mvn clean
+mvn test
+```
+
+# Running the terminal server
+1. Download and unzip the submitted file
+2. Open the file in terminal
+3. Run the terminal client
+```bash
+java -jar cs5031p3code-terminal-0.0.1.war
+```
+
+# Testing the terminal client
+1. Navigate into 'EstateAgencySystemTerminal'
+```bash
+cd EstateAgencySystemTerminal
+```
+2. Clean and test
+```bash
+mvn clean
+mvn test
+```
+
+# Running the web client
+1. Navigate to the 'EstateAgencySystemGUI'
+```bash
+cd EstateAgencySystemGUI
 ```
 2. Install, build, and run
 ```bash
-npm install
-npm run build
-npm run preview
+npm i
+npm start
 ```
 3. Open the url displayed in the terminal in a browser
-
-# Testing the back-end server
-1. Navigate into 'TravelPlannerSystem'
-```bash
-cd TravelPlannerSystem
-```
-2. Open and execute
-```bash
-mvn clean
-mvn install
-```
-3. Start test
-```bash
-mvn test
-```

@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,6 +47,7 @@ public class Flat implements Serializable {
     /**
      * The sold out date of flat
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date flatSoldOutDate;
 
     /**

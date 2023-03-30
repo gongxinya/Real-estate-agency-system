@@ -241,12 +241,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
 
         // Keep the uniqueness of user email.
-        if (!Objects.isNull(user.getUserEmail())) {
-            if (StringUtils.hasText(user.getUserEmail())) {
-                this.checkUserEmail(user);
-            } else {
-                throw new EstateException("User email cannot be empty!");
-            }
+        if (Objects.isNull(user.getUserEmail()) || !StringUtils.hasText(user.getUserEmail())) {
+            throw new EstateException("User email cannot be empty!");
+        } else {
+            this.checkUserEmail(user);
         }
 
         // Update user.
@@ -296,9 +294,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public void checkUserEmail(User user) throws EstateException {
         var userQueryWrapper = new LambdaQueryWrapper<User>();
         userQueryWrapper.eq(User::getUserEmail, user.getUserEmail());
-        var count = userMapper.selectCount(userQueryWrapper);
-        // User is existed!
-        if (count > 0) {
+        var userEmailList = userMapper.selectList(userQueryWrapper)
+                .stream()
+                .filter(user1 -> !Objects.equals(user.getUserId(), user1.getUserId()))
+                .map(User::getUserEmail)
+                .toList();
+        if (userEmailList.contains(user.getUserEmail())) {
             throw new EstateException("User email is existed!");
         }
     }

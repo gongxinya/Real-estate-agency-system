@@ -110,12 +110,10 @@ public class BuildingServiceImpl extends ServiceImpl<BuildingMapper, Building>
         }
 
         // Keep the uniqueness of building name.
-        if (!Objects.isNull(building.getBuildingName())) {
-            if (StringUtils.hasText(building.getBuildingName())) {
-                this.checkBuildingName(building);
-            } else {
-                throw new EstateException("Building name cannot be empty!");
-            }
+        if (Objects.isNull(building.getBuildingName()) || !StringUtils.hasText(building.getBuildingName())) {
+            throw new EstateException("Building name cannot be empty!");
+        } else {
+            this.checkBuildingName(building);
         }
 
         // Update building.
@@ -150,8 +148,12 @@ public class BuildingServiceImpl extends ServiceImpl<BuildingMapper, Building>
     public void checkBuildingName(Building building) throws EstateException {
         var buildingQueryWrapper = new LambdaQueryWrapper<Building>();
         buildingQueryWrapper.eq(Building::getBuildingName, building.getBuildingName());
-        var count = buildingMapper.selectCount(buildingQueryWrapper);
-        if (count > 0) {
+        var buildingNameList = buildingMapper.selectList(buildingQueryWrapper)
+                .stream()
+                .filter(building1 -> !Objects.equals(building.getBuildingId(), building1.getBuildingId()))
+                .map(Building::getBuildingName)
+                .toList();
+        if (buildingNameList.contains(building.getBuildingName())) {
             throw new EstateException("Building name is existed!");
         }
     }

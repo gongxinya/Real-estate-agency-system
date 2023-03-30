@@ -231,41 +231,34 @@ const App = () => {
         }
     });
     setData(updatedData);
-    console.log(updatedData)
+    // console.log(updatedData)
 };
 
 const handleUpdateSubmit = (updatedRecord) => {
 
-    console.log('updatedRecord:')
-    console.log(updatedRecord)
-    console.log('rawData:')
-    console.log(rawData)
-    const rawRowData = rawData.find(item => item.userId === updatedRecord.userId)
 
-    console.log('raw data:')
-    console.log(rawRowData)
-    console.log('new data:')
-    
 
-    Object.keys(rawRowData).forEach((field) => {
-        if (rawRowData[field] === updatedRecord[field] && field !== 'userId') {
-          updatedRecord[field] = null;
-        }
-    });
+    // const rawRowData = rawData.find(item => item.userId === updatedRecord.userId)
 
-    console.log(updatedRecord)
+
+    // Object.keys(rawRowData).forEach((field) => {
+    //     if (rawRowData[field] === updatedRecord[field] && field !== 'userId') {
+    //       updatedRecord[field] = null;
+    //     }
+    // });
+
+    // console.log(updatedRecord)
 
 
     const headers = { "user_key": localStorage.getItem("user_key") };
 
-    // Send another HTTP request to get the data
-    axios.get('http://localhost:8080/user/list', { headers }).then((response) => {
-        setData(response.data.data);
-    });
+    // // Send another HTTP request to get the data
+    // axios.get('http://localhost:8080/user/list', { headers }).then((response) => {
+    //     setData(response.data.data);
+    // });
 
     // Send an HTTP request to update the data
     axios.put('http://localhost:8080/user/update/' + updatedRecord.userId, updatedRecord
-        // axios.put('http://localhost:8080/user/update/${updatedRecord.userId}', updateData1
         , { headers })
         .then((response) => {
           if(response.data.code === 200){
@@ -276,7 +269,7 @@ const handleUpdateSubmit = (updatedRecord) => {
             console.log(response.data.message)
             axios.get('http://localhost:8080/user/list', { headers }).then((response) => {
                 setData(response.data.data);
-                setRawData(response.data.data);
+                // setRawData(response.data.data);
             });
         });
 
@@ -287,7 +280,6 @@ const handleDelete = (userId) => {
     const headers = {
         "user_key": localStorage.getItem("user_key")
     };
-    // axios.delete('http://localhost:8080/user/delete/' + userId
         axios.delete('http://localhost:8080/user/delete/' + userId
         , { headers })
         .then((response) => {
@@ -298,7 +290,6 @@ const handleDelete = (userId) => {
             message.error(response.data.message); // display error message
           }
             console.log(response.data)
-            
         });
 };
 

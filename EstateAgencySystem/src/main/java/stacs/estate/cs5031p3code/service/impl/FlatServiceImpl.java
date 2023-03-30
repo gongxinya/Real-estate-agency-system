@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import stacs.estate.cs5031p3code.exception.EstateException;
 import stacs.estate.cs5031p3code.mapper.BuildingMapper;
+import stacs.estate.cs5031p3code.mapper.UserMapper;
 import stacs.estate.cs5031p3code.model.po.Building;
 import stacs.estate.cs5031p3code.model.po.Flat;
+import stacs.estate.cs5031p3code.model.po.User;
 import stacs.estate.cs5031p3code.service.FlatService;
 import stacs.estate.cs5031p3code.mapper.FlatMapper;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,12 @@ public class FlatServiceImpl extends ServiceImpl<FlatMapper, Flat>
     private FlatMapper flatMapper;
 
     /**
+     * The user mapper.
+     */
+    @Autowired
+    private UserMapper userMapper;
+
+    /**
      * The method for creating flat by building id.
      *
      * @param buildingId The building id.
@@ -57,6 +65,11 @@ public class FlatServiceImpl extends ServiceImpl<FlatMapper, Flat>
 
         // Check the building id.
         this.checkBuildingId(buildingId);
+
+        // Check the user id.
+        if (!Objects.isNull(flat.getUserId())) {
+            this.checkUserId(flat.getUserId());
+        }
 
         // Check the flat name in a building
         this.checkFlatName(buildingId, flat);
@@ -124,13 +137,16 @@ public class FlatServiceImpl extends ServiceImpl<FlatMapper, Flat>
             flat.setBuildingId(oldFlat.getBuildingId());
         }
 
+        // Check user id.
+        if (!Objects.isNull(flat.getUserId())) {
+            this.checkUserId(flat.getUserId());
+        }
+
         // Keep the uniqueness of flat name.
-        if (!Objects.isNull(flat.getFlatName())) {
-            if (StringUtils.hasText(flat.getFlatName())) {
-                this.checkFlatName(flat.getBuildingId(), flat);
-            } else {
-                throw new EstateException("Flat name cannot be empty!");
-            }
+        if (Objects.isNull(flat.getFlatName()) || !StringUtils.hasText(flat.getFlatName())) {
+            throw new EstateException("Flat name cannot be empty!");
+        } else {
+            this.checkFlatName(flat.getBuildingId(), flat);
         }
 
         // Update flat.
@@ -191,6 +207,7 @@ public class FlatServiceImpl extends ServiceImpl<FlatMapper, Flat>
         flatQueryWrapper.eq(Flat::getBuildingId, buildingId);
         var flatNameList = flatMapper.selectList(flatQueryWrapper)
                 .stream()
+                .filter(flat1 -> !Objects.equals(flat.getFlatId(), flat1.getFlatId()))
                 .map(Flat::getFlatName)
                 .toList();
         if (flatNameList.contains(flat.getFlatName())) {
@@ -210,6 +227,21 @@ public class FlatServiceImpl extends ServiceImpl<FlatMapper, Flat>
         var building = buildingMapper.selectOne(buildingQueryWrapper);
         if (Objects.isNull(building)) {
             throw new EstateException("Building is not existed!");
+        }
+    }
+
+    /**
+     * The method for checking the user id whether is existed.
+     *
+     * @param userId The user id.
+     * @throws EstateException The EstateException object.
+     */
+    public void checkUserId(Long userId) throws EstateException {
+        var userQueryWrapper = new LambdaQueryWrapper<User>();
+        userQueryWrapper.eq(User::getUserId, userId);
+        var user = userMapper.selectOne(userQueryWrapper);
+        if (Objects.isNull(user)) {
+            throw new EstateException("User is not existed!");
         }
     }
 

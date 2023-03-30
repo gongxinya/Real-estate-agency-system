@@ -1,8 +1,8 @@
 import { AutoComplete, Button, Cascader, Checkbox, Col, Form, Input, InputNumber, Row, Select, message } from 'antd';
 import { useState } from 'react';
 import axios from 'axios';
-
-
+import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const formItemLayout = {
   labelCol: {
@@ -35,10 +35,9 @@ const tailFormItemLayout = {
   },
 };
 const App = () => {
+  const history = useHistory();
   const [form] = Form.useForm();
   const onFinish = (values) => {
-    const headers = { "user_key": localStorage.getItem("user_key") };
-    console.log('Received values of form: ', values);
     axios.post('http://localhost:8080/user/create',
       {
         userEmail: values.email,
@@ -49,14 +48,12 @@ const App = () => {
       })
       .then((response) => {
         if(response.data.code === 200){
-          console.log(response.data)
-          message.success(response.data.message); // display success message       
+          message.success(response.data.message); // display success message 
+          history.push('/')
         } else {
           message.error(response.data.message); // display error message
-          localStorage.setItem("user_key", response.data.user_key);
         }
       });
-    
   };
 
 

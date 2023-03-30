@@ -106,12 +106,10 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         }
 
         // Keep the uniqueness of permission name.
-        if (!Objects.isNull(permission.getPermissionName())) {
-            if (StringUtils.hasText(permission.getPermissionName())) {
-                this.checkPermissionName(permission);
-            } else {
-                throw new EstateException("Permission name cannot be empty!");
-            }
+        if (Objects.isNull(permission.getPermissionName()) || !StringUtils.hasText(permission.getPermissionName())) {
+            throw new EstateException("Permission name cannot be empty!");
+        } else {
+            this.checkPermissionName(permission);
         }
 
         // Update permission.
@@ -146,8 +144,12 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
     public void checkPermissionName(Permission permission) throws EstateException {
         var permissionQueryWrapper = new LambdaQueryWrapper<Permission>();
         permissionQueryWrapper.eq(Permission::getPermissionName, permission.getPermissionName());
-        var count = permissionMapper.selectCount(permissionQueryWrapper);
-        if (count > 0) {
+        var permissionNameList = permissionMapper.selectList(permissionQueryWrapper)
+                .stream()
+                .filter(permission1 -> !Objects.equals(permission.getPermissionId(), permission1.getPermissionId()))
+                .map(Permission::getPermissionName)
+                .toList();
+        if (permissionNameList.contains(permission.getPermissionName())) {
             throw new EstateException("Permission name is existed!");
         }
     }

@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 /**
  * The class for testing UserController
  *
- * @author 220032952
+ * @author 220017897
  * @version 0.0.1
  */
 @SpringBootTest
@@ -115,7 +115,7 @@ public class UserControllerTest {
         var response = userController.register(user);
         assertEquals(HttpStatus.OK.value(), response.getCode());
         assertNull(response.getData());
-        assertEquals("User registered successfully", response.getMessage());
+        assertEquals("Create successful!", response.getMessage());
         verify(userService, times(1)).register(user);
     }
 

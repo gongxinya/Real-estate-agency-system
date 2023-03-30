@@ -1,4 +1,4 @@
-# Back-end development environment
+# Server development environment
 
 ## Getting Started
 1. Build and install
@@ -10,7 +10,7 @@ mvn package
 2. Execute the war
 ```bash
 cd target
-java -jar cs5031p3code-0.0.1.war
+java -jar cs5031p3code-server-0.0.1.war
 ```
 
 ## Test code

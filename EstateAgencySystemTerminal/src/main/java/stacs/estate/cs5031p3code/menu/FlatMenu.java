@@ -84,7 +84,7 @@ public class FlatMenu implements Menu {
                         String name = scanner.nextLine();
                         System.out.println("Flat Area: ");
                         String area = scanner.nextLine();
-                        System.out.println("Flat Sold Date: ");
+                        System.out.println("Flat Sold Date(yyyy-MM-dd HH:mm:ss): ");
                         String date = scanner.nextLine();
                         System.out.println("Flat Price: ");
                         String price = scanner.nextLine();

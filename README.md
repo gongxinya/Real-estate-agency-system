@@ -1,5 +1,10 @@
 # Production environment
 
+# User account
+* admin(hz65@st-andrews.ac.uk, 1234)
+* manager(xg31@st-andrews.ac.uk, 1234)
+* guest(jw384@st-andrews.ac.uk, 1234)
+
 # Running the server
 1. Keep the port "8080" open and available
 2. Download and unzip the submitted file

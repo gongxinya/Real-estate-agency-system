@@ -147,7 +147,7 @@ public class UserServiceTest {
         assertEquals(expectedMessage, actualMessage);
 
         // 4. Update successful!
-        var user4 = User.builder().userId(1L).userPhone("07536").build();
+        var user4 = User.builder().userId(1L).userEmail("hz65@st-andrews.ac.uk").userPhone("07536").build();
         assertDoesNotThrow(() -> {
             userService.updateUserByUserId(user4.getUserId(), user4);
         });

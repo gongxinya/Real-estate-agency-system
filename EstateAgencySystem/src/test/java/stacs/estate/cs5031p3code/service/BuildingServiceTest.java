@@ -97,7 +97,7 @@ public class BuildingServiceTest {
         assertEquals(expectedMessage, actualMessage);
 
         // 4. Delete successful
-        Long buildingId4 = 3L;
+        Long buildingId4 = 4L;
         assertDoesNotThrow(() -> {
             buildingService.deleteBuildingById(buildingId4);
         });
@@ -122,7 +122,7 @@ public class BuildingServiceTest {
         // 2. Building name is existed!
         var building2 = Building.builder()
                 .buildingId(2L)
-                .buildingName("David")
+                .buildingName("Powell Hall")
                 .build();
         exception = assertThrows(EstateException.class, () -> {
             buildingService.updateBuildingByBuildingId(building2.getBuildingId(), building2);
@@ -161,7 +161,7 @@ public class BuildingServiceTest {
     public void testBuildingList() {
         assertDoesNotThrow(() -> {
             var buildingList = buildingService.getBuildingList();
-            assertEquals(3, buildingList.size());
+            assertEquals(4, buildingList.size());
         });
     }
 }

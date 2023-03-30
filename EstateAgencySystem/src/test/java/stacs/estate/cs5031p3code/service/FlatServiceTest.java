@@ -47,13 +47,13 @@ public class FlatServiceTest {
 
         // 2. Building is not existed
         var flat2 = Flat.builder()
-                .buildingId(4L)
+                .buildingId(5L)
                 .flatArea(new BigDecimal("100.0"))
                 .flatName("C floor")
                 .build();
 
         exception = assertThrows(EstateException.class, () -> {
-            flatService.createFlatByBuildingId(4L, flat2);
+            flatService.createFlatByBuildingId(5L, flat2);
         });
         expectedMessage = "Building is not existed!";
         actualMessage = exception.getMessage();
@@ -141,7 +141,7 @@ public class FlatServiceTest {
         // 2. Check building id.
         var flat2 = Flat.builder()
                 .flatId(3L)
-                .buildingId(4L)
+                .buildingId(5L)
                 .build();
         exception = assertThrows(EstateException.class, () -> {
             flatService.updateFlatByFlatId(flat2.getFlatId(), flat2);
@@ -152,9 +152,9 @@ public class FlatServiceTest {
 
         // 3. Keep the uniqueness of flat name.
         var flat3 = Flat.builder()
-                .flatId(3L)
-                .buildingId(2L)
-                .flatName("Balfour")
+                .flatId(2L)
+                .buildingId(1L)
+                .flatName("A floor")
                 .build();
         exception = assertThrows(EstateException.class, () -> {
             flatService.updateFlatByFlatId(flat3.getFlatId(), flat3);

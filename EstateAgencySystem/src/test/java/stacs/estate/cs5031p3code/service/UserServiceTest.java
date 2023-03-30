@@ -43,7 +43,6 @@ public class UserServiceTest {
             assertNotNull(map);
             assertNotNull(map.get("user_key"));
         });
-
     }
 
     /**
